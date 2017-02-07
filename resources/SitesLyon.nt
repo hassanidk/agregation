@@ -1,0 +1,56 @@
+<http://ter/basilique-notre-dame-de-fourviere> <http://ter/property/nom> "Basilique notre dâme de fourviere".
+<http://ter/basilique-notre-dame-de-fourviere> <http://ter/property/lundi-ouverture> "10:00".
+<http://ter/basilique-notre-dame-de-fourviere> <http://ter/property/lundi-fermeture> "17:00".
+<http://ter/basilique-notre-dame-de-fourviere> <http://ter/property/mardi-ouverture> "10:00".
+<http://ter/basilique-notre-dame-de-fourviere> <http://ter/property/mardi-fermeture> "17:00".
+<http://ter/basilique-notre-dame-de-fourviere> <http://ter/property/mercredi-ouverture> "10:00".
+<http://ter/basilique-notre-dame-de-fourviere> <http://ter/property/mercredi-fermeture> "17:00".
+<http://ter/basilique-notre-dame-de-fourviere> <http://ter/property/jeudi-ouverture> "10:00".
+<http://ter/basilique-notre-dame-de-fourviere> <http://ter/property/jeudi-fermeture> "17:00".
+<http://ter/basilique-notre-dame-de-fourviere> <http://ter/property/vendredi-ouverture> "10:00".
+<http://ter/basilique-notre-dame-de-fourviere> <http://ter/property/vendredi-fermeture> "17:00".
+<http://ter/basilique-notre-dame-de-fourviere> <http://ter/property/samedi-ouverture> "10:00".
+<http://ter/basilique-notre-dame-de-fourviere> <http://ter/property/samedi-fermeture> "17:00".
+<http://ter/basilique-notre-dame-de-fourviere> <http://ter/property/duree-visite-moyenne> "00:30".
+<http://ter/basilique-notre-dame-de-fourviere> <http://ter/property/station-tcl> "Fourviere".
+<http://ter/basilique-notre-dame-de-fourviere> <http://ter/property/type> "Cathédrale".
+<http://ter/basilique-notre-dame-de-fourviere> <http://ter/property/pertinence> "5".
+
+<http://ter/parc-tete-d-or> <http://ter/property/nom> "Parc de la tête d'or".
+<http://ter/parc-tete-d-or> <http://ter/property/lundi-ouverture> "6:30".
+<http://ter/parc-tete-d-or> <http://ter/property/lundi-fermeture> "20:30".
+<http://ter/parc-tete-d-or> <http://ter/property/mardi-ouverture> "6:30".
+<http://ter/parc-tete-d-or> <http://ter/property/mardi-fermeture> "20:30".
+<http://ter/parc-tete-d-or> <http://ter/property/mercredi-ouverture> "6:30".
+<http://ter/parc-tete-d-or> <http://ter/property/mercredi-fermeture> "20:30".
+<http://ter/parc-tete-d-or> <http://ter/property/jeudi-ouverture> "6:30".
+<http://ter/parc-tete-d-or> <http://ter/property/jeudi-fermeture> "20:30".
+<http://ter/parc-tete-d-or> <http://ter/property/vendredi-ouverture> "6:30".
+<http://ter/parc-tete-d-or> <http://ter/property/vendredi-fermeture> "20:30".
+<http://ter/parc-tete-d-or> <http://ter/property/samedi-ouverture> "6:30".
+<http://ter/parc-tete-d-or> <http://ter/property/samedi-fermeture> "20:30".
+<http://ter/parc-tete-d-or> <http://ter/property/dimanche-ouverture> "6:30".
+<http://ter/parc-tete-d-or> <http://ter/property/dimanche-fermeture> "20:30".
+<http://ter/parc-tete-d-or> <http://ter/property/duree-visite-moyenne> "2:00".
+<http://ter/parc-tete-d-or> <http://ter/property/station-tcl> "Saxe-Gambetta".
+<http://ter/parc-tete-d-or> <http://ter/property/type> "Parc".
+<http://ter/parc-tete-d-or> <http://ter/property/pertinence> "4".
+
+<http://ter/musee-beaux-arts> <http://ter/property/nom> "Musée des beaux arts".
+<http://ter/musee-beaux-arts> <http://ter/property/lundi-ouverture> "10:00".
+<http://ter/musee-beaux-arts> <http://ter/property/lundi-fermeture> "18:00".
+<http://ter/musee-beaux-arts> <http://ter/property/mercredi-ouverture> "10:00".
+<http://ter/musee-beaux-arts> <http://ter/property/mercredi-fermeture> "18:00".
+<http://ter/musee-beaux-arts> <http://ter/property/jeudi-ouverture> "10:00".
+<http://ter/musee-beaux-arts> <http://ter/property/jeudi-fermeture> "18:00".
+<http://ter/musee-beaux-arts> <http://ter/property/vendredi-ouverture> "10:00".
+<http://ter/musee-beaux-arts> <http://ter/property/vendredi-fermeture> "18:00".
+<http://ter/musee-beaux-arts> <http://ter/property/samedi-ouverture> "10:00".
+<http://ter/musee-beaux-arts> <http://ter/property/samedi-fermeture> "18:00".
+<http://ter/musee-beaux-arts> <http://ter/property/dimanche-ouverture> "10:00".
+<http://ter/musee-beaux-arts> <http://ter/property/dimanche-fermeture> "18:00".
+<http://ter/musee-beaux-arts> <http://ter/property/duree-visite-moyenne> "3:00".
+<http://ter/musee-beaux-arts> <http://ter/property/station-tcl> "Hôtel de ville".
+<http://ter/musee-beaux-arts> <http://ter/property/type> "Musée".
+<http://ter/musee-beaux-arts> <http://ter/property/pertinence> "4".
+

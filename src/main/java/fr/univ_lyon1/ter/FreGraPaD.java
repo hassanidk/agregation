@@ -5,7 +5,9 @@ import java.io.IOException;
 import java.math.BigInteger;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Calendar;
 import java.util.Collections;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -19,11 +21,13 @@ import org.apache.jena.riot.lang.PipedRDFStream;
 import org.apache.jena.riot.lang.PipedTriplesStream;
 import org.rdfhdt.hdt.util.StopWatch;
 
+import fr.univ_lyon1.ter.utilitaire.GenerateurRDF;
+
 //import com.hp.hpl.jena.graph.Triple;
 
 public class FreGraPaD {
 
-	public static void main(String... argv) throws IOException {
+	public void get_etoile() throws IOException {
 		BigInteger GraphId = new BigInteger("0");
 		Map<BigInteger, Integer> GraphTable = new HashMap<BigInteger, Integer>(); //GHT : hastable des graphes
 		Map<String, Integer> PredicatTable = new HashMap<String, Integer>(); //PHT : hastable des Predicats
@@ -75,9 +79,9 @@ public class FreGraPaD {
 			// Do something with each triple
 			previous = next;	
 		}
-//System.out.println("okokokokokooko");
 
 	    
+	
 	}
 
 	

@@ -11,9 +11,10 @@ import java.util.HashMap;
  */
 public class Utils {
 	
-	static final String file_name_horraire_tcl = System.getProperty("user.dir")+ "/resources/HorraireTCL.nt";
+	static final String file_horraire_tcl = System.getProperty("user.dir")+ "/resources/HorraireTCL.nt";
 	/**
-	 * metro_b : ArrayList contenant la liste des arrêts du métro b
+	 * _b_vers_jean_mace : contient la liste des arrêts du métro b 
+	 * 					   allant de la part-dieu à jean mace
 	 */
 	@SuppressWarnings("serial")
 	static final ArrayList<String> _b_vers_jean_mace = new ArrayList<String>() {{
@@ -23,7 +24,10 @@ public class Utils {
 		add("jean_mace");
 	
 	}};
-	
+	/**
+	 * _b_vers_part_dieu: contient la liste des arrêts du métro b 
+	 * 					  allant de jean-mace à la part dieu
+	 */
 	@SuppressWarnings("serial")
 	static final ArrayList<String> _b_vers_part_dieu = new ArrayList<String>(){{
 		add("jean_mace");
@@ -32,6 +36,32 @@ public class Utils {
 		add("part_dieu");
 		
 	}};
+	
+	/**
+	 * _d_vers_*: ArrayLists contenant la liste des arrêts du métro d
+	 */
+	@SuppressWarnings("serial")
+	static final ArrayList<String> _d_vers_garibaldi = new ArrayList<String>() {{
+		add("guillotiere");
+		add("saxe_gambetta");
+		add("garibaldi");
+	
+	}};
+	
+	@SuppressWarnings("serial")
+	static final ArrayList<String> _d_vers_guillotiere = new ArrayList<String>() {{
+		add("garibaldi");
+		add("saxe_gambetta");
+		add("guillotiere");
+	
+	}};
+	
+	/**
+	 * 
+	 * @param metro, la ligne de métro dont on souhaite l'horraire
+	 * @param i, le i eme arrêt de la ligne de metro dont on souhaite l'horraire à partir du depart (Ou terminus)
+	 * @return le temps de parcours du départ à la station i
+	 */
 	public static int timeByMetro(String metro,int i){
 		if (metro.contains("metro_b")){
 			if (metro.contains("vers_jean_mace")){
@@ -55,30 +85,15 @@ public class Utils {
 		
 			
 	}
-	// De part-dieu à JM
+	// Temps de parcours de la part-dieu à jean macé (2 unités de temps por aller de part dieu à saxe
 	static final int[] temps_parcours_b = new int[] {0,1,2,3};
-	// De garibaldi a gui
+	// Temps de parcours de garibaldi a guilotiere
 	static final int[] temps_parcours_d = new int[] {0,1,2};
 	;
+
 	/**
-	 * metro_d : ArrayList contenant la liste des arrêts du métro d
+	 * Permet d'avoir la topologie du réseau
 	 */
-	@SuppressWarnings("serial")
-	static final ArrayList<String> _d_vers_garibaldi = new ArrayList<String>() {{
-		add("guillotiere");
-		add("saxe_gambetta");
-		add("garibaldi");
-	
-	}};
-	
-	@SuppressWarnings("serial")
-	static final ArrayList<String> _d_vers_guillotiere = new ArrayList<String>() {{
-		add("garibaldi");
-		add("saxe_gambetta");
-		add("guillotiere");
-	
-	}};
-	
 	@SuppressWarnings("serial")
 	static final HashMap<String, ArrayList<String>> listeArret = new HashMap<String,ArrayList<String>>(){{
 		put("metro_b_vers_jean_mace", _b_vers_jean_mace);
@@ -87,7 +102,11 @@ public class Utils {
 		put("metro_d_vers_guillotiere", _d_vers_guillotiere);
 			
 	}};
-	
+	/**
+	 * 
+	 * @param arrivee, correspond à la date d'arrivée de la personne en gare
+	 * @return 5 si il s'agit d'un jour de semaine, 10 week end
+	 */
 	public static int getPeriode(Calendar arrivee){
 		int jour = arrivee.get(Calendar.DAY_OF_WEEK);
 		if (jour >= Calendar.FRIDAY && jour <= Calendar.MONDAY)

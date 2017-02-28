@@ -24,7 +24,9 @@ public class GenerateurRDF {
 			int heure_depart = depart.get(Calendar.HOUR_OF_DAY)*100 + depart.get(Calendar.MINUTE);
 			
 			//boolean station_bloque = false;  Sera utile pour couper momentanément les stations (Incident ..)
-			PrintWriter writer = new PrintWriter(Utils.file_name_horraire_tcl, "UTF-8");
+			PrintWriter writer = new PrintWriter(Utils.file_horraire_tcl, "UTF-8");
+			
+			// Parcours de l'ensemble du réseau
 			for (Map.Entry<String, ArrayList<String>> entry : Utils.listeArret.entrySet()){
 				temps = arrivee.get(Calendar.HOUR_OF_DAY)*100 + arrivee.get(Calendar.MINUTE);
 				depart_precedent = temps;
@@ -32,6 +34,7 @@ public class GenerateurRDF {
 				String metro = entry.getKey();
 				ArrayList<String> ligne_metro = entry.getValue();
 				while ( temps < heure_depart){
+					// Parcours de chaque arrêt de metro par ligne
 					for (String arret_metro : ligne_metro ){
 						if (ligne_metro.get(0).equals(arret_metro)){
 							temps = depart_precedent+1 +(int) (Math.random() * periode);

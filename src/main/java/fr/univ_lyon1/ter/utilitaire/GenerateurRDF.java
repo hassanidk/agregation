@@ -28,6 +28,7 @@ public class GenerateurRDF {
 			
 			// Parcours de l'ensemble du réseau
 			for (Map.Entry<String, ArrayList<String>> entry : Utils.listeArret.entrySet()){
+			
 				temps = arrivee.get(Calendar.HOUR_OF_DAY)*100 + arrivee.get(Calendar.MINUTE);
 				depart_precedent = temps;
 				i = 1;
@@ -48,7 +49,7 @@ public class GenerateurRDF {
 					}
 					i++;
 					writer.println("\n");
-					System.out.println("");
+					
 				}
 			}
 				writer.close();

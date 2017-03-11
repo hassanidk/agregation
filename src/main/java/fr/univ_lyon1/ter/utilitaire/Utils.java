@@ -3,6 +3,9 @@ package fr.univ_lyon1.ter.utilitaire;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+
+import fr.univ_lyon1.dijkstra.Chemin;
+import fr.univ_lyon1.dijkstra.Chemin;
 /**
  * 
  * @author loki
@@ -103,6 +106,19 @@ public class Utils {
 			
 	}};
 	/**
+	 * Modelisation du reseau TCL par un graph 
+	 * 0 = Part-Dieu, 1= Place-Guichard , 2 =Saxe-Gambetta, 3 = Jean-Mace, 
+	 * 4=Garibaldi, 5=Guilotiere
+	 */
+
+	public static final Chemin[] listeArretDK  = {
+			new Chemin(0,1,1),
+			new Chemin(1,2,1),
+			new Chemin(2,3,1),
+			new Chemin(2,4,1),
+			new Chemin(2,5,1)
+	};
+	/**
 	 * 
 	 * @param arrivee, correspond à la date d'arrivée de la personne en gare
 	 * @return 5 si il s'agit d'un jour de semaine, 10 week end
@@ -135,6 +151,8 @@ public class Utils {
 	public static int getMin(int hours){
 		return hours%100;
 	}
+	
+	
 	
 	
 }

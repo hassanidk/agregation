@@ -20,31 +20,7 @@ public class Utils {
 	 * 					   allant de la part-dieu à jean mace
 	 */
 	@SuppressWarnings("serial")
-	static final ArrayList<String> _b_vers_jean_mace = new ArrayList<String>() {{
-		add("part_dieu");
-		add("place_guichard");
-		add("saxe_gambetta");
-		add("jean_mace");
-	
-	}};
-	/**
-	 * _b_vers_part_dieu: contient la liste des arrêts du métro b 
-	 * 					  allant de jean-mace à la part dieu
-	 */
-	@SuppressWarnings("serial")
-	static final ArrayList<String> _b_vers_part_dieu = new ArrayList<String>(){{
-		add("jean_mace");
-		add("saxe_gambetta");
-		add("place_guichard");
-		add("part_dieu");
-		
-	}};
-	
-	/**
-	 * _d_vers_*: ArrayLists contenant la liste des arrêts du métro d
-	 */
-	@SuppressWarnings("serial")
-	static final ArrayList<String> _d_vers_garibaldi = new ArrayList<String>() {{
+	static final ArrayList<String> metro_d = new ArrayList<String>() {{
 		add("guillotiere");
 		add("saxe_gambetta");
 		add("garibaldi");
@@ -52,63 +28,68 @@ public class Utils {
 	}};
 	
 	@SuppressWarnings("serial")
-	static final ArrayList<String> _d_vers_guillotiere = new ArrayList<String>() {{
-		add("garibaldi");
+	static final ArrayList<String> metro_b = new ArrayList<String>() {{
+		add("part_dieu");
+		add("place_guichard");
 		add("saxe_gambetta");
-		add("guillotiere");
+		add("jean_mace");
 	
 	}};
-	
-	/**
-	 * 
-	 * @param metro, la ligne de métro dont on souhaite l'horraire
-	 * @param i, le i eme arrêt de la ligne de metro dont on souhaite l'horraire à partir du depart (Ou terminus)
-	 * @return le temps de parcours du départ à la station i
-	 */
-	public static int timeByMetro(String metro,int i){
-		if (metro.contains("metro_b")){
-			if (metro.contains("vers_jean_mace")){
-				return temps_parcours_b[i];
-			}else{
-				return Math.abs(temps_parcours_b[temps_parcours_b.length-1] - temps_parcours_b[i]) ;
-			}
-		}
-		
-		if (metro.contains("metro_d")){
-			if (metro.contains("vers_garibaldi")){
-				return temps_parcours_d[i];
-			}else{
-				return Math.abs(temps_parcours_d[temps_parcours_d.length-1] - temps_parcours_d[i]) ;
-			}
-		}
-		
-		
-		return 0;
-			
-		
-			
-	}
-	// Temps de parcours de la part-dieu à jean macé (2 unités de temps por aller de part dieu à saxe
-	static final int[] temps_parcours_b = new int[] {0,1,2,3};
-	// Temps de parcours de garibaldi a guilotiere
-	static final int[] temps_parcours_d = new int[] {0,1,2};
-	;
 
+	// Explications tableaux dans readme
+	static final int[][] distance_horaire_b = new int[][] {
+		{0,1,0,0},
+		{1,0,1,0},
+		{0,1,0,1},
+		{0,0,1,0}
+	};
+	
+	static final int[][] distance_horaire_d = new int[][]{
+		{0,1,0},
+		{1,0,1},
+		{0,1,0}
+	};
+		
 	/**
 	 * Permet d'avoir la topologie du réseau
 	 */
 	@SuppressWarnings("serial")
 	static final HashMap<String, ArrayList<String>> listeArret = new HashMap<String,ArrayList<String>>(){{
-		put("metro_b_vers_jean_mace", _b_vers_jean_mace);
-		put("metro_b_vers_part_dieu", _b_vers_part_dieu);
-		put("metro_d_vers_garibaldi", _d_vers_garibaldi);
-		put("metro_d_vers_guillotiere", _d_vers_guillotiere);
-			
+		put("metro_b", metro_b);
+		put("metro_d", metro_d);
 	}};
+	
+
+	
+	/**
+	 * 
+	 * @param sens , correspond au 
+	 * @param metro
+	 * @param i
+	 * @return la duree entre deux stations
+	 */
+	public static int timeByMetro(boolean sens, String metro,int i){
+		
+		int j = i;
+		if (sens){	
+			j++;
+		}else{
+			j--;
+		}
+		switch (metro){
+			case "metro_b":
+				return distance_horaire_b[i][j];
+			case "metro_d":
+				return distance_horaire_d[i][j];
+			default:
+				return -1;
+		}		
+	}
 	/**
 	 * Modelisation du reseau TCL par un graph 
 	 * 0 = Part-Dieu, 1= Place-Guichard , 2 =Saxe-Gambetta, 3 = Jean-Mace, 
-	 * 4=Garibaldi, 5=Guilotiere
+	 * 4=Garibaldi, 5=Guilotiere, 6 ...
+	 * 
 	 */
 
 	public static final Chemin[] listeArretDK  = {

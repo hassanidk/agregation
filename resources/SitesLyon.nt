@@ -50,7 +50,27 @@
 <http://ter/musee-beaux-arts> <http://ter/property/dimanche-ouverture> "10:00".
 <http://ter/musee-beaux-arts> <http://ter/property/dimanche-fermeture> "18:00".
 <http://ter/musee-beaux-arts> <http://ter/property/duree-visite-moyenne> "3:00".
-<http://ter/musee-beaux-arts> <http://ter/property/station-tcl> "Hôtel de ville".
+<http://ter/musee-beaux-arts> <http://ter/property/station-tcl> "Hôtel de Ville / Louis Pradel".
 <http://ter/musee-beaux-arts> <http://ter/property/type> "Musée".
 <http://ter/musee-beaux-arts> <http://ter/property/pertinence> "4".
+
+<http://ter/opera-lyon> <http://ter/property/nom> "Opéra de Lyon".
+<http://ter/opera-lyon> <http://ter/property/lundi-ouverture> "20:00".
+<http://ter/opera-lyon> <http://ter/property/lundi-fermeture> "23:00".
+<http://ter/opera-lyon> <http://ter/property/mardi-ouverture> "20:00".
+<http://ter/opera-lyon> <http://ter/property/mardi-fermeture> "23:00".
+<http://ter/opera-lyon> <http://ter/property/mercredi-ouverture> "20:00".
+<http://ter/opera-lyon> <http://ter/property/mercredi-fermeture> "23:00".
+<http://ter/opera-lyon> <http://ter/property/jeudi-ouverture> "20:00".
+<http://ter/opera-lyon> <http://ter/property/jeudi-fermeture> "23:00".
+<http://ter/opera-lyon> <http://ter/property/vendredi-ouverture> "20:00".
+<http://ter/opera-lyon> <http://ter/property/vendredi-fermeture> "23:00".
+<http://ter/opera-lyon> <http://ter/property/samedi-ouverture> "20:00".
+<http://ter/opera-lyon> <http://ter/property/samedi-fermeture> "23:00".
+<http://ter/opera-lyon> <http://ter/property/dimanche-ouverture> "20:00".
+<http://ter/opera-lyon> <http://ter/property/dimanche-fermeture> "23:00".
+<http://ter/opera-lyon> <http://ter/property/duree-visite-moyenne> "3:00".
+<http://ter/opera-lyon> <http://ter/property/station-tcl> "Hôtel de Ville / Louis Pradel".
+<http://ter/opera-lyon> <http://ter/property/type> "Opera".
+<http://ter/opera-lyon> <http://ter/property/pertinence> "5".
 

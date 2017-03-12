@@ -31,6 +31,8 @@ developpements et tests rapides des différentes fonctionalités
 		-Pour une ligne de métro, nous avons choisi de créer
 		 deux array lists. (DU point A à B, et B à A). Cela
 		 nous a faciliter la génération d'horaire aléatoire
+
+
 	* Explications classe "GenerateurRDF"
 		- Méthode mise_a_jour_horraire
 

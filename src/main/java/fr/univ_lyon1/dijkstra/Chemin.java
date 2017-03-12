@@ -5,7 +5,7 @@ public class Chemin {
 	private int arretPrecedent;
 	private int arretSuivant;
 	private int distance;
-
+	
 	public Chemin(int arretPrecedent, int toNodeIndex, int distance) {
 		this.arretPrecedent = arretPrecedent;
 		this.arretSuivant = toNodeIndex;

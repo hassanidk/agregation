@@ -53,7 +53,7 @@ public class Graph {
 	 * 
 	 * @param arretDepart : Sommet sur lequel on souhaite utiliser l'algorithme
 	 */
-	public void plusCourtChemin(int arretDepart) {
+	public void plusCourtChemin(int arretDepart, int arretArrivee) {
 		// On vérifie si arretDepart existe
 		if (arretDepart< nbArrets || arretDepart >0){
 			arrets[arretDepart].setDistanceFromSource(0);
@@ -77,7 +77,7 @@ public class Graph {
 				// On souhaite se rendre a l'arretSuivant avec la plus petite distance
 				arretSuivant = getNodeShortestDistanced();
 			}
-			printResult(arretDepart);
+			printResult(arretDepart, arretArrivee);
 		}else{
 			System.out.println("Erreur numéro arrêt");
 		}
@@ -98,15 +98,11 @@ public class Graph {
 		return storedNodeIndex;
 	}
 
-	// Affichage résultat des plus court chemins
-	private void printResult(int arretDepart) {
+	// Affichage résultat du plus court chemin entre A et D
+	private void printResult(int arretDepart, int arretArrivee) {
 		String output = "Nombre d'arrêts = " + this.nbArrets;
 		output += "\nNombre de chemins = " + this.nbChemins;
-
-		for (int i = 0; i < this.arrets.length; i++) {
-			output += ("\nLa plus courte distance de l'arrêt "+Utils.nomArret[arretDepart]+" à l'arret " + Utils.nomArret[i] + " est de " + arrets[i].getDistanceFromSource());
-		}
-
+		output += ("\nLa plus courte distance de l'arrêt "+Utils.nomArret[arretDepart]+" à l'arret " + Utils.nomArret[arretArrivee] + " est de " + arrets[arretArrivee].getDistanceFromSource());
 		System.out.println(output);
 	}
 

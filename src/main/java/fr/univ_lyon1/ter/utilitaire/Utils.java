@@ -118,6 +118,10 @@ public class Utils {
 			new Chemin(2,4,1),
 			new Chemin(2,5,1)
 	};
+	
+	public static final String[] nomArret = new String[] 
+			{"Part-Dieu", "Place-Guichard", "Saxe-Gambetta",
+					"Jean-Mace", "Garibaldi","Guilotiere"};
 	/**
 	 * 
 	 * @param arrivee, correspond à la date d'arrivée de la personne en gare

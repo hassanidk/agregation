@@ -12,11 +12,10 @@ public class App {
 		Calendar arrivee = new GregorianCalendar(2017,2,17,13,0,00);
 		Calendar depart = new GregorianCalendar(2017,2,17,15,30,00);
 		
-		GenerateurRDF generateur = new GenerateurRDF();
-		generateur.mise_a_jour_horraire(arrivee, depart);
-		/*
+//		GenerateurRDF generateur = new GenerateurRDF();
+//		generateur.mise_a_jour_horraire(arrivee, depart);
+//		
 		Graph graphTCL = new Graph(Utils.listeArretDK);
-		graphTCL.calculateShortestDistances();
-		graphTCL.printResult();*/
+		graphTCL.plusCourtChemin(2);
 	}
 }

@@ -2,39 +2,43 @@ package fr.univ_lyon1.dijkstra;
 
 import java.util.ArrayList;
 
-//now we must create graph object and implement dijkstra algorithm
+import fr.univ_lyon1.ter.utilitaire.Utils;
+
 public class Graph {
 
 	private Arret[] arrets;
 	private int nbArrets;
 	private Chemin[] chemins;
 	private int nbChemins;
-
+	/**
+	 * 
+	 * @param chemins liste de tous les liens du réseau
+	 */
 	public Graph(Chemin[] chemins) {
 		this.chemins = chemins;
-
-		// create all nodes ready to be updated with the edges
+		this.nbChemins = chemins.length;
 		this.nbArrets = getNbArrets(chemins);
 		this.arrets = new Arret[this.nbArrets];
-
-		for (int n = 0; n < this.nbArrets; n++) {
-			this.arrets[n] = new Arret();
+		
+		//On crée les différents arrêts
+		for (int n = 0; n < nbArrets; n++) {
+			arrets[n] = new Arret();
 		}
-
-		// add all the edges to the nodes, each edge added to two nodes (to and
-		// from)
-		this.nbChemins = chemins.length;
-
-		for (int cheminAjout = 0; cheminAjout < this.nbChemins; cheminAjout++) {
-			this.arrets[chemins[cheminAjout].getFromNodeIndex()].getChemins().add(chemins[cheminAjout]);
-			this.arrets[chemins[cheminAjout].getToNodeIndex()].getChemins().add(chemins[cheminAjout]);
+		//ON relie les différents arrêts
+		for (int cheminAjout = 0; cheminAjout < nbChemins; cheminAjout++) {
+			arrets[chemins[cheminAjout].getFromNodeIndex()].getChemins().add(chemins[cheminAjout]);
+			arrets[chemins[cheminAjout].getToNodeIndex()].getChemins().add(chemins[cheminAjout]);
 		}
 
 	}
-
+	
+	/**
+	 * 
+	 * @param chemins, la liste de tous les liens du réseau
+	 * @return le nombre d'arrêts du réseau de transport
+	 */
 	private int getNbArrets(Chemin[] chemins) {
 		int nbArret = 0;
-
 		for (Chemin e : chemins) {
 			if (e.getToNodeIndex() > nbArret)
 				nbArret = e.getToNodeIndex();
@@ -45,37 +49,37 @@ public class Graph {
 		return nbArret;
 	}
 
-	// next video to implement the Dijkstra algorithm !!!
-	public void calculateShortestDistances() {
-		// node 0 as source
-		this.arrets[0].setDistanceFromSource(0);
-		int arretSuivant = 0;
-
-		// visit every node
-		for (int i = 0; i < this.arrets.length; i++) {
-			// loop around the edges of current node
-			ArrayList<Chemin> currentNodeEdges = this.arrets[arretSuivant].getChemins();
-
-			for (int joinedEdge = 0; joinedEdge < currentNodeEdges.size(); joinedEdge++) {
-				int neighbourIndex = currentNodeEdges.get(joinedEdge).getNeighbourIndex(arretSuivant);
-
-				// only if not visited
-				if (!this.arrets[neighbourIndex].isVisitee()) {
-					int tentative = this.arrets[arretSuivant].getDistanceFromSource()
-							+ currentNodeEdges.get(joinedEdge).getLength();
-
-					if (tentative < arrets[neighbourIndex].getDistanceFromSource()) {
-						arrets[neighbourIndex].setDistanceFromSource(tentative);
+	/**
+	 * 
+	 * @param arretDepart : Sommet sur lequel on souhaite utiliser l'algorithme
+	 */
+	public void plusCourtChemin(int arretDepart) {
+		// On vérifie si arretDepart existe
+		if (arretDepart< nbArrets || arretDepart >0){
+			arrets[arretDepart].setDistanceFromSource(0);
+			int arretSuivant = arretDepart;
+	
+			// Parcours de tous les sommets(arrets)
+			for (int i = 0; i < this.arrets.length; i++) {
+				// Boucle sur tous les liens de l'arret actuel
+				ArrayList<Chemin> currentNodeEdges = arrets[arretSuivant].getChemins();
+				for (int joinedEdge = 0; joinedEdge < currentNodeEdges.size(); joinedEdge++) {
+					int neighbourIndex = currentNodeEdges.get(joinedEdge).getNeighbourIndex(arretSuivant);
+					if (!arrets[neighbourIndex].isVisitee()) {
+						int tentative = arrets[arretSuivant].getDistanceFromSource()
+								+ currentNodeEdges.get(joinedEdge).getLength();
+						if (tentative < arrets[neighbourIndex].getDistanceFromSource()) 
+							arrets[neighbourIndex].setDistanceFromSource(tentative);
 					}
 				}
+				// Tous les voisins ont été visités, donc le sommet(arret) est visité
+				arrets[arretSuivant].setVisitee(true);
+				// On souhaite se rendre a l'arretSuivant avec la plus petite distance
+				arretSuivant = getNodeShortestDistanced();
 			}
-
-			// all neighbours checked so node visited
-			arrets[arretSuivant].setVisitee(true);
-
-			// next node must be with shortest distance
-			arretSuivant = getNodeShortestDistanced();
-
+			printResult(arretDepart);
+		}else{
+			System.out.println("Erreur numéro arrêt");
 		}
 	}
 
@@ -83,10 +87,8 @@ public class Graph {
 	private int getNodeShortestDistanced() {
 		int storedNodeIndex = 0;
 		int storedDist = Integer.MAX_VALUE;
-
 		for (int i = 0; i < this.arrets.length; i++) {
 			int currentDist = this.arrets[i].getDistanceFromSource();
-
 			if (!this.arrets[i].isVisitee() && currentDist < storedDist) {
 				storedDist = currentDist;
 				storedNodeIndex = i;
@@ -96,13 +98,13 @@ public class Graph {
 		return storedNodeIndex;
 	}
 
-	// display result
-	public void printResult() {
-		String output = "Number of nodes = " + this.nbArrets;
-		output += "\nNumber of edges = " + this.nbChemins;
+	// Affichage résultat des plus court chemins
+	private void printResult(int arretDepart) {
+		String output = "Nombre d'arrêts = " + this.nbArrets;
+		output += "\nNombre de chemins = " + this.nbChemins;
 
 		for (int i = 0; i < this.arrets.length; i++) {
-			output += ("\nThe shortest distance from node 0 to node " + i + " is " + arrets[i].getDistanceFromSource());
+			output += ("\nLa plus courte distance de l'arrêt "+Utils.nomArret[arretDepart]+" à l'arret " + Utils.nomArret[i] + " est de " + arrets[i].getDistanceFromSource());
 		}
 
 		System.out.println(output);

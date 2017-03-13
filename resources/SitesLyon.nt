@@ -11,6 +11,8 @@
 <http://ter/basilique-notre-dame-de-fourviere> <http://ter/property/vendredi-fermeture> "17:00".
 <http://ter/basilique-notre-dame-de-fourviere> <http://ter/property/samedi-ouverture> "10:00".
 <http://ter/basilique-notre-dame-de-fourviere> <http://ter/property/samedi-fermeture> "17:00".
+<http://ter/basilique-notre-dame-de-fourviere> <http://ter/property/dimanche-ouverture> "Fermé".
+<http://ter/basilique-notre-dame-de-fourviere> <http://ter/property/dimanche-fermeture> "Fermé".
 <http://ter/basilique-notre-dame-de-fourviere> <http://ter/property/duree-visite-moyenne> "00:30".
 <http://ter/basilique-notre-dame-de-fourviere> <http://ter/property/station-tcl> "Fourviere".
 <http://ter/basilique-notre-dame-de-fourviere> <http://ter/property/type> "Cathédrale".
@@ -36,9 +38,31 @@
 <http://ter/parc-tete-d-or> <http://ter/property/type> "Parc".
 <http://ter/parc-tete-d-or> <http://ter/property/pertinence> "4".
 
-<http://ter/musee-beaux-arts> <http://ter/property/nom> "Musée des beaux arts".
+<http://ter/musee-des-confluences> <http://ter/property/nom> "Musée des Confluences".
+<http://ter/musee-des-confluences> <http://ter/property/lundi-ouverture> "Fermé".
+<http://ter/musee-des-confluences> <http://ter/property/lundi-fermeture> "Fermé".
+<http://ter/musee-des-confluences> <http://ter/property/mardi-ouverture> "11:00".
+<http://ter/musee-des-confluences> <http://ter/property/mardi-fermeture> "19:00".
+<http://ter/musee-des-confluences> <http://ter/property/mercredi-ouverture> "11:00".
+<http://ter/musee-des-confluences> <http://ter/property/mercredi-fermeture> "19:00".
+<http://ter/musee-des-confluences> <http://ter/property/jeudi-ouverture> "11:00".
+<http://ter/musee-des-confluences> <http://ter/property/jeudi-fermeture> "22:00".
+<http://ter/musee-des-confluences> <http://ter/property/vendredi-ouverture> "11:00".
+<http://ter/musee-des-confluences> <http://ter/property/vendredi-fermeture> "19:00".
+<http://ter/musee-des-confluences> <http://ter/property/samedi-ouverture> "10:00".
+<http://ter/musee-des-confluences> <http://ter/property/samedi-fermeture> "19:00".
+<http://ter/musee-des-confluences> <http://ter/property/dimanche-ouverture> "10:00".
+<http://ter/musee-des-confluences> <http://ter/property/dimanche-fermeture> "19:00".
+<http://ter/musee-des-confluences> <http://ter/property/duree-visite-moyenne> "WW".
+<http://ter/musee-des-confluences> <http://ter/property/station-tcl> "Debourg".
+<http://ter/musee-des-confluences> <http://ter/property/type> "Musée".
+<http://ter/musee-des-confluences> <http://ter/property/pertinence> "3".
+
+<http://ter/musee-beaux-arts> <http://ter/property/nom> "Musée des Beaux Arts".
 <http://ter/musee-beaux-arts> <http://ter/property/lundi-ouverture> "10:00".
 <http://ter/musee-beaux-arts> <http://ter/property/lundi-fermeture> "18:00".
+<http://ter/musee-beaux-arts> <http://ter/property/mardi-ouverture> "Fermé".
+<http://ter/musee-beaux-arts> <http://ter/property/mardi-fermeture> "Fermé".
 <http://ter/musee-beaux-arts> <http://ter/property/mercredi-ouverture> "10:00".
 <http://ter/musee-beaux-arts> <http://ter/property/mercredi-fermeture> "18:00".
 <http://ter/musee-beaux-arts> <http://ter/property/jeudi-ouverture> "10:00".
@@ -53,6 +77,7 @@
 <http://ter/musee-beaux-arts> <http://ter/property/station-tcl> "Hôtel de Ville / Louis Pradel".
 <http://ter/musee-beaux-arts> <http://ter/property/type> "Musée".
 <http://ter/musee-beaux-arts> <http://ter/property/pertinence> "4".
+
 
 <http://ter/opera-lyon> <http://ter/property/nom> "Opéra de Lyon".
 <http://ter/opera-lyon> <http://ter/property/lundi-ouverture> "20:00".

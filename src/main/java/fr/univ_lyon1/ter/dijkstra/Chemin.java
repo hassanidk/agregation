@@ -1,4 +1,4 @@
-package fr.univ_lyon1.dijkstra;
+package fr.univ_lyon1.ter.dijkstra;
 
 public class Chemin {
 

@@ -27,64 +27,51 @@ public class GenerateurRDF {
 			
 			//boolean station_bloque = false;  Sera utile pour couper momentanément les stations (Incident ..)
 			PrintWriter writer = new PrintWriter(Utils.file_horraire_tcl, "UTF-8");
-		
-			// Parcours de l'ensemble des lignes du point A à B
-			for (Map.Entry<String, ArrayList<String>> entry : Utils.listeArret.entrySet()){
-				heure_actuelle = arrivee.get(Calendar.HOUR_OF_DAY)*100 + arrivee.get(Calendar.MINUTE);
-				depart_precedent = heure_actuelle;
-				i = 1;
-				String metro = entry.getKey();
-				ArrayList<String> ligne_metro = entry.getValue();
-				while ( heure_actuelle < heure_depart){
-					// Parcours de chaque arrêt de metro par ligne
-					indice = -1;
-					for (String arret_metro : ligne_metro ){
-						if (ligne_metro.get(0).equals(arret_metro)){
-							heure_actuelle = depart_precedent+1 +(int) (Math.random() * periode);
-							heure_actuelle = Utils.checkHour(heure_actuelle);
-							depart_precedent = heure_actuelle;
+			
+			int j = 0; // Permet de parcours les lignes dans les deux sens
+			String lien;
+			while (j!=2){
+				for (Map.Entry<String, ArrayList<String>> entry : Utils.listeArret.entrySet()){
+					heure_actuelle = arrivee.get(Calendar.HOUR_OF_DAY)*100 + arrivee.get(Calendar.MINUTE);
+					depart_precedent = heure_actuelle;
+					i = 1;
+					String metro = entry.getKey();
+					ArrayList<String> ligne_metro = entry.getValue();
+					while ( heure_actuelle < heure_depart){
+						// Parcours de chaque arrêt de metro par ligne
+						if (j ==0){
+							indice = -1;
+							lien="";
 						}else{
-							heure_actuelle = heure_actuelle +Utils.timeByMetro(sens,metro, indice);
-							heure_actuelle = Utils.checkHour(heure_actuelle);
-						}						
-						writer.println("<http://ter/ligne/"+metro+"> <http://ter/property/arret/"+ arret_metro+ "/horraire_"+i+"> \""+ Utils.getHour(heure_actuelle)+":"+Utils.getMin(heure_actuelle)+"\".");		
-						indice++;
+							indice = ligne_metro.size();
+							lien = "-sens_inverse";
+						}
+						for (String arret_metro : ligne_metro ){
+							if (ligne_metro.get(0).equals(arret_metro)){
+								heure_actuelle = depart_precedent+1 +(int) (Math.random() * periode);
+								heure_actuelle = Utils.checkHour(heure_actuelle);
+								depart_precedent = heure_actuelle;
+							}else{
+								heure_actuelle = heure_actuelle +Utils.timeByMetro(sens,metro, indice);
+								heure_actuelle = Utils.checkHour(heure_actuelle);
+							}						
+							writer.println("<http://ter/ligne/"+metro+lien+"> <http://ter/property/arret/"+ arret_metro+ "/horraire_"+i+"> \""+ Utils.getHour(heure_actuelle)+":"+Utils.getMin(heure_actuelle)+"\".");		
+							if (j==0){
+								indice++;
+							}else{
+								indice--;
+							}
+						}
+						i++;
+						writer.println("\n");
 					}
-					i++;
-					writer.println("\n");
 				}
-			}
-			// On parcours l'ensemble des lignes du point B à A
-			// On réinitialise les variables
-			sens = false;
-			heure_actuelle = arrivee.get(Calendar.HOUR_OF_DAY)*100 + arrivee.get(Calendar.MINUTE);
-			for (Map.Entry<String, ArrayList<String>> entry : Utils.listeArret.entrySet()){
+				// On réinitialise les variables
+				sens = false;
 				heure_actuelle = arrivee.get(Calendar.HOUR_OF_DAY)*100 + arrivee.get(Calendar.MINUTE);
-				depart_precedent = heure_actuelle;
-				i = 1;
-				String metro = entry.getKey();
-				ArrayList<String> ligne_metro = entry.getValue();
-				while ( heure_actuelle < heure_depart){
-					// Parcours de chaque arrêt de metro par ligne
-					indice = ligne_metro.size() ;
-	
-					for (String arret_metro : inverse(ligne_metro) ){
-						if (ligne_metro.get(ligne_metro.size()-1).equals(arret_metro)){
-							heure_actuelle = depart_precedent+1 +(int) (Math.random() * periode);
-							heure_actuelle = Utils.checkHour(heure_actuelle);
-							depart_precedent = heure_actuelle;
-						}else{	
-							heure_actuelle = heure_actuelle+ Utils.timeByMetro(sens, metro, indice);
-							heure_actuelle = Utils.checkHour(heure_actuelle);
-						}						
-						writer.println("<http://ter/ligne/"+metro+"-sens_inverse> <http://ter/property/arret/"+ arret_metro+ "/horraire_"+i+"> \""+ Utils.getHour(heure_actuelle)+":"+Utils.getMin(heure_actuelle)+"\".");		
-						indice--;
-					}
-					i++;
-					writer.println("\n");
-				}
+				j++;
 			}
-			writer.close();
+
 			System.out.println("----Génération terminée----");
 		} catch (IOException e) {
 			

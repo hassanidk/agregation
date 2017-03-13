@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 
-import fr.univ_lyon1.dijkstra.Chemin;
-import fr.univ_lyon1.dijkstra.Chemin;
+import es.usc.citius.hipster.graph.GraphBuilder;
+import es.usc.citius.hipster.graph.HipsterGraph;
 /**
  * 
  * @author loki
@@ -14,7 +14,8 @@ import fr.univ_lyon1.dijkstra.Chemin;
  */
 public class Utils {
 	
-	static final String file_horraire_tcl = System.getProperty("user.dir")+ "/resources/HorraireTCL.nt";
+	public static final String file_horraire_tcl = System.getProperty("user.dir")+ "/resources/HorraireTCL.nt";
+	public static final String file_sites_lyon = System.getProperty("user.dir")+ "/resources/SitesLyon.nt";
 	
 	@SuppressWarnings("serial")
 	static final ArrayList<String> metro_a = new ArrayList<String>() {{
@@ -180,77 +181,55 @@ public class Utils {
 	}
 	/**
 	 * Modelisation du reseau TCL par un graph 
-	 * 0 = Perrache, 1=AmpereVictorHugo, 2=Bellcour...
-	 * NOTE : Utiliser le tableau des horaires à la place de mettre 1 !!!
 	 */
 
-	public static final Chemin[] listeArretDK  = {
-			//2 = Bellcour
-			//7 = Charpennes
-			//17 = Saxe Gambetta
-			
-			// Metro A
-			new Chemin(0,1,1),
-			new Chemin(1,2,1),
-			new Chemin(2,3,1),
-			new Chemin(3,4,1),
-			new Chemin(4,5,1),
-			new Chemin(5,6,1),
-			new Chemin(6,7,1),
-			new Chemin(7,8,1),
-			new Chemin(8,9,1),
-			new Chemin(9,10,1),
-			new Chemin(10,11,1),
-			new Chemin(11,12,1),
-			new Chemin(12,13,1),
-			//Metro B
-			
-			new Chemin(7,14,1),
-			new Chemin(14,15,1),
-			new Chemin(15,16,1),
-			new Chemin(16,17,1),
-			new Chemin(17,18,1),
-			new Chemin(18,19,1),
-			new Chemin(19,20,1),
-			new Chemin(20,21,1),
-			new Chemin(21,22,1),
-			//MEtro C
-			new Chemin(4,23,1),
-			new Chemin(23,24,1),
-			new Chemin(24,25,1),
-			new Chemin(25,26,1),
-			
-			//Metro D
-			new Chemin(27,28,1),
-			new Chemin(28,29,1),
-			new Chemin(29,30,1),
-			new Chemin(30,2,1),
-			new Chemin(2,31,1),
-			new Chemin(31,17,1),
-			new Chemin(17,32,1),
-			new Chemin(32,33,1),
-			new Chemin(33,34,1),
-			new Chemin(34,35,1),
-			new Chemin(35,36,1),
-			new Chemin(36,37,1),
-			new Chemin(37,38,1),
-			new Chemin(38,39,1),
+	public static HipsterGraph<String,Double> reseauTCL = 
+			GraphBuilder.<String,Double>create()
+			.connect("Perrache").to("Ampère - Victor Hugo").withEdge(1d)
+			.connect("Ampère - Victor Hugo").to("Bellecour").withEdge(1d)
+			.connect("Bellecour").to("Cordeliers").withEdge(1d)
+			.connect("Cordeliers").to("Hôtel de Ville - Louis Pradel").withEdge(1d)
+			.connect("Hôtel de Ville - Louis Pradel").to("Foch").withEdge(1d)
+			.connect("Foch").to("Massena").withEdge(1d)
+			.connect("Massena").to("Charpennes").withEdge(1d)
+			.connect("Charpennes").to("République").withEdge(1d)
+			.connect("République").to("Gratte-Ciel").withEdge(1d)
+			.connect("Gratte-Ciel").to("Flachet").withEdge(1d)
+			.connect("Flachet").to("Cusset").withEdge(1d)
+			.connect("Cusset").to("Laurent Bonnevay").withEdge(1d)
+			.connect("Laurent Bonnevay").to("Vaulx-en-Velin - La Soie").withEdge(1d)
 
-	};
-	// On associe le nom d'un arrêt à un indice
-	public static final String[] nomArret = new String[] 
-			{"Perrache", "Ampère - Victor Hugo", "Bellecour", "Cordeliers", "Hôtel de Ville - Louis Pradel",
-					"Foch", "Massena", "Charpennes", " République", "Gratte_ciel", "Flachet",
-					"Cusset", "Laurent Bonnevay", "Vaulx-en-Velin - La Soie",
-			//Ligne B (Sans doublons)
-				"Brotteaux", "Part-Dieu", "Place Guichard", "Saxe-Gambetta",
-			 		"Jean-Macé", "Place Jean-Jaures", "Debourg", "Stade de Gerland", "Gare d'Oullins",
-			//Ligne C(Sans doublons)
-			 	"Croix-Paquet", "Croix-Rousse", "Henon", "Cuire",
-			//Ligne D(Sans doublons)
-			 	"Gare de Vaise", "Valmy", "Gorge de Loup", "Vieux lyon", "Guillotiere", "Garibaldi",
-			 	"Sans-Souci", "Monplaisir-Lumiere", "Grange-Blache", "Laennec", "Mermoz-Pinel", "Parilly", "Gare de Venissieux"
-			};
+			.connect("Charpennes").to("Brotteaux").withEdge(1d)
+			.connect("Brotteaux").to("Part-Dieu").withEdge(1d)
+			.connect("Part-Dieu").to("Place Guichard").withEdge(1d)
+			.connect("Place Guichard").to("Saxe-Gambetta").withEdge(1d)
+			.connect("Saxe-Gambetta").to("Jean-Macé").withEdge(1d)
+			.connect("Jean-Macé").to("Place Jean-Jaures").withEdge(1d)
+			.connect("Place Jean-Jaures").to("Debourg").withEdge(1d)
+			.connect("Debourg").to("Stade de Gerland").withEdge(1d)
+			.connect("Stade de Gerland").to("Gare d'Oullins").withEdge(1d)
+
+			.connect("Hôtel de Ville - Louis Pradel").to("Croix-Paquet").withEdge(1d)
+			.connect("Croix-Paquet").to("Croix-Rousse").withEdge(1d)
+			.connect("Croix-Rousse").to("Henon").withEdge(1d)
+			.connect("Henon").to("Cuire").withEdge(1d)
+
+			.connect("Gare de Vaise").to("Valmy").withEdge(1d)
+			.connect("Valmy").to("Gorge de Loup").withEdge(1d)
+			.connect("Gorge de Loup").to("Vieux lyon").withEdge(1d)
+			.connect("Vieux lyon").to("Bellecour").withEdge(1d)
+			.connect("Bellecour").to("Guillotiere").withEdge(1d)
+			.connect("Guillotiere").to("Saxe-Gambetta").withEdge(1d)
+			.connect("Saxe-Gambetta").to("Garibaldi").withEdge(1d)
+			.connect("Garibaldi").to("Sans-Souci").withEdge(1d)
+			.connect("Sans-Souci").to("Monplaisir-Lumiere").withEdge(1d)
+			.connect("Monplaisir-Lumiere").to("Grange-Blache").withEdge(1d)
+			.connect("Grange-Blache").to("Laennec").withEdge(1d)
+			.connect("Laennec").to("Mermoz-Pinel").withEdge(1d)
+			.connect("Mermoz-Pinel").to("Parilly").withEdge(1d)
+			.connect("Parilly").to("Gare de Venissieux").withEdge(1d)
+
+			.createUndirectedGraph();
 
 	/**
 	 * 

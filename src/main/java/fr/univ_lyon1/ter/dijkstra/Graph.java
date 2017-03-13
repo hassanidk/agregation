@@ -1,4 +1,4 @@
-package fr.univ_lyon1.dijkstra;
+package fr.univ_lyon1.ter.dijkstra;
 
 import java.util.ArrayList;
 
@@ -55,8 +55,10 @@ public class Graph {
 	 */
 	public void plusCourtChemin(int arretDepart, int arretArrivee) {
 		// On vérifie si arretDepart existe
+
 		if (arretDepart< nbArrets || arretDepart >0){
 			arrets[arretDepart].setDistanceFromSource(0);
+			arrets[arretDepart].setUtilisee(true);
 			int arretSuivant = arretDepart;
 	
 			// Parcours de tous les sommets(arrets)
@@ -68,21 +70,29 @@ public class Graph {
 					if (!arrets[neighbourIndex].isVisitee()) {
 						int tentative = arrets[arretSuivant].getDistanceFromSource()
 								+ currentNodeEdges.get(joinedEdge).getLength();
-						if (tentative < arrets[neighbourIndex].getDistanceFromSource()) 
+						if (tentative < arrets[neighbourIndex].getDistanceFromSource()){
 							arrets[neighbourIndex].setDistanceFromSource(tentative);
+						}
+						
 					}
 				}
 				// Tous les voisins ont été visités, donc le sommet(arret) est visité
 				arrets[arretSuivant].setVisitee(true);
+		
 				// On souhaite se rendre a l'arretSuivant avec la plus petite distance
+				
 				arretSuivant = getNodeShortestDistanced();
+				
 			}
+			
 			printResult(arretDepart, arretArrivee);
+			
 		}else{
 			System.out.println("Erreur numéro arrêt");
 		}
 	}
-
+	
+	
 	// now we're going to implement this method in next part !
 	private int getNodeShortestDistanced() {
 		int storedNodeIndex = 0;
@@ -100,10 +110,13 @@ public class Graph {
 
 	// Affichage résultat du plus court chemin entre A et D
 	private void printResult(int arretDepart, int arretArrivee) {
-		String output = "Nombre d'arrêts = " + this.nbArrets;
-		output += "\nNombre de chemins = " + this.nbChemins;
-		output += ("\nLa plus courte distance de l'arrêt "+Utils.nomArret[arretDepart]+" à l'arret " + Utils.nomArret[arretArrivee] + " est de " + arrets[arretArrivee].getDistanceFromSource());
-		System.out.println(output);
+		String output = "Nombre d'arrêts = " + nbArrets;
+		for (int i = 0; i<nbChemins;++i){
+		//	output += ("\nLa plus courte distance de l'arrêt "+Utils.nomArret[arretDepart]+" à l'arret " + Utils.nomArret[i] + " est de " + arrets[arretArrivee].getDistanceFromSource());
+			System.out.println(output);
+		}
+	
+		
 	}
 
 	public Arret[] getNodes() {

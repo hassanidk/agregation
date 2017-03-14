@@ -26,9 +26,11 @@ public class App {
 //                .takeCostsFromEdges()
 //                .build();
 //		System.out.println(Hipster.createDijkstra(p).search("Part-Dieu").getOptimalPaths());
-		ArrayList<String> t =new ArrayList<String>();
-		t.add("Musée");
-		Aggregation agg = new Aggregation(arrivee,depart,t);
+		ArrayList<String> preferences =new ArrayList<String>();
+		preferences.add("Musée");
+		Aggregation agg = new Aggregation(arrivee,depart,preferences);
 		agg.getSites();
+		agg.getItineraire();
+		System.out.println("fini");
 	}
 }

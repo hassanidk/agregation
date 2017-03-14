@@ -265,6 +265,24 @@ public class Utils {
 		return hours%100;
 	}
 	
+	public static String getDay(Calendar date){
+		int jour = date.get(Calendar.DAY_OF_WEEK);
+		switch (jour){
+			case Calendar.MONDAY: return "lundi";
+			case Calendar.TUESDAY: return "mardi";
+			case Calendar.WEDNESDAY: return "mercredi";
+			case Calendar.THURSDAY: return "jeudi";
+			case Calendar.FRIDAY: return "vendredi";
+			case Calendar.SATURDAY: return "samedi";
+			case Calendar.SUNDAY: return "dimanche";
+			default: return "Erreur parsing";
+			
+		}
+	}
+	
+	public static int getHeure(Calendar date){
+		return date.get(Calendar.HOUR_OF_DAY)*100 + date.get(Calendar.MINUTE);
+	}
 	
 	
 	

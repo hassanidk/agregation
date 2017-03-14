@@ -15,6 +15,9 @@ import org.apache.jena.riot.lang.PipedTriplesStream;
 
 import com.github.andrewoma.dexx.collection.HashMap;
 
+import es.usc.citius.hipster.algorithm.Hipster;
+import es.usc.citius.hipster.graph.GraphSearchProblem;
+import es.usc.citius.hipster.model.problem.SearchProblem;
 import fr.univ_lyon1.ter.utilitaire.CompareSite;
 import fr.univ_lyon1.ter.utilitaire.Utils;
 
@@ -60,7 +63,7 @@ public class Aggregation {
 				listeSite.add(site);
 				site = new Site();	
 			}
-			site.setPropery(i, previous.getObject().toString());
+			site.setProperty(i, previous.getObject().toString());
 			i++;
 			previous = next;		
 		}
@@ -69,7 +72,7 @@ public class Aggregation {
 		listeSite.remove(0);
 		executor.shutdown();
 	}
-	
+	// Méthode qui permet d'avoir les sites que l'utilisateurs souhaite visiter
 	public void getSites(){
 		// On charges tous les sites
 		getAllSites();
@@ -87,6 +90,41 @@ public class Aggregation {
 		}
 		// ON reorganise avec la pertinence du site
 		Collections.sort(listeSite, new CompareSite());	
+	}
+	/**
+	 * L'objectif est de partir de la Part Dieu, visiter les sites possibles,
+	 * pus revenir à la part-dieu avant l'heure où l'utilisateur quitte la ville
+	 */
+	public void getItineraire(){
+		String arretDepart = "Part-Dieu";
+		String arretArrivee ="";
+		String jour = Utils.getDay(arrivee);
+		Iterator<Site> it = listeSite.iterator();
+	
+		while(it.hasNext()){
+			Site site = it.next();
+			int horaire = site.getHorraireOuverture(jour);
+			if (horaire!=5000){
+				SearchProblem p = GraphSearchProblem
+			              .startingFrom(arretDepart)
+			              .in(Utils.reseauTCL)
+			              .takeCostsFromEdges()
+			              .build();
+				arretArrivee = site.getStationTCL();
+				System.out.println(arretDepart);
+				// Tu fais dijkstra
+				System.out.println(Hipster.createDijkstra(p).search(arretArrivee));
+				//Tu verifie que tu peux retourner a part dieu avant l'heure de depart
+				// (Tu prend le temps de parcours * 2 et tu compare a l'heure de depart
+				// SI oui tu l'ajoute aux site à visiter
+				// Si non tu supprimes le site et t
+				arretDepart = arretArrivee;
+			
+			}else{
+				it.remove();
+			}
+			
+		}
 	}
 
 }

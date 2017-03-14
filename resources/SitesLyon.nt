@@ -14,7 +14,7 @@
 <http://ter/basilique-notre-dame-de-fourviere> <http://ter/property/dimanche-ouverture> "Fermé".
 <http://ter/basilique-notre-dame-de-fourviere> <http://ter/property/dimanche-fermeture> "Fermé".
 <http://ter/basilique-notre-dame-de-fourviere> <http://ter/property/duree-visite-moyenne> "00:30".
-<http://ter/basilique-notre-dame-de-fourviere> <http://ter/property/station-tcl> "Fourviere".
+<http://ter/basilique-notre-dame-de-fourviere> <http://ter/property/station-tcl> "Vieux lyon".
 <http://ter/basilique-notre-dame-de-fourviere> <http://ter/property/type> "Cathédrale".
 <http://ter/basilique-notre-dame-de-fourviere> <http://ter/property/pertinence> "5".
 
@@ -74,7 +74,7 @@
 <http://ter/musee-beaux-arts> <http://ter/property/dimanche-ouverture> "10:00".
 <http://ter/musee-beaux-arts> <http://ter/property/dimanche-fermeture> "18:00".
 <http://ter/musee-beaux-arts> <http://ter/property/duree-visite-moyenne> "3:00".
-<http://ter/musee-beaux-arts> <http://ter/property/station-tcl> "Hôtel de Ville / Louis Pradel".
+<http://ter/musee-beaux-arts> <http://ter/property/station-tcl> "Hôtel de Ville - Louis Pradel".
 <http://ter/musee-beaux-arts> <http://ter/property/type> "Musée".
 <http://ter/musee-beaux-arts> <http://ter/property/pertinence> "4".
 
@@ -95,7 +95,7 @@
 <http://ter/opera-lyon> <http://ter/property/dimanche-ouverture> "20:00".
 <http://ter/opera-lyon> <http://ter/property/dimanche-fermeture> "23:00".
 <http://ter/opera-lyon> <http://ter/property/duree-visite-moyenne> "3:00".
-<http://ter/opera-lyon> <http://ter/property/station-tcl> "Hôtel de Ville / Louis Pradel".
+<http://ter/opera-lyon> <http://ter/property/station-tcl> "Hôtel de Ville - Louis Pradel".
 <http://ter/opera-lyon> <http://ter/property/type> "Opera".
 <http://ter/opera-lyon> <http://ter/property/pertinence> "5".
 

@@ -14,9 +14,9 @@ import fr.univ_lyon1.ter.utilitaire.Utils;
 public class App {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public static void main(String... argv)  {
-		Calendar arrivee = new GregorianCalendar(2017,2,17,13,0,00);
-		Calendar depart = new GregorianCalendar(2017,2,17,15,30,00);
-		
+		Calendar arrivee = new GregorianCalendar(2017,3,20,13,0,00);
+		Calendar depart = new GregorianCalendar(2017,3,20,15,30,00);
+			
 		GenerateurRDF generateur = new GenerateurRDF();
 		generateur.mise_a_jour_horraire(arrivee, depart);
 //		
@@ -29,8 +29,9 @@ public class App {
 		ArrayList<String> preferences =new ArrayList<String>();
 		preferences.add("Musée");
 		Aggregation agg = new Aggregation(arrivee,depart,preferences);
-		agg.getSites();
-		agg.getItineraire();
+		
+		agg.affichageResultat();
+		
 		System.out.println("fini");
 	}
 }

@@ -53,7 +53,7 @@
 <http://ter/musee-des-confluences> <http://ter/property/samedi-fermeture> "19:00".
 <http://ter/musee-des-confluences> <http://ter/property/dimanche-ouverture> "10:00".
 <http://ter/musee-des-confluences> <http://ter/property/dimanche-fermeture> "19:00".
-<http://ter/musee-des-confluences> <http://ter/property/duree-visite-moyenne> "WW".
+<http://ter/musee-des-confluences> <http://ter/property/duree-visite-moyenne> "00:45".
 <http://ter/musee-des-confluences> <http://ter/property/station-tcl> "Debourg".
 <http://ter/musee-des-confluences> <http://ter/property/type> "Musée".
 <http://ter/musee-des-confluences> <http://ter/property/pertinence> "3".
@@ -73,8 +73,8 @@
 <http://ter/musee-beaux-arts> <http://ter/property/samedi-fermeture> "18:00".
 <http://ter/musee-beaux-arts> <http://ter/property/dimanche-ouverture> "10:00".
 <http://ter/musee-beaux-arts> <http://ter/property/dimanche-fermeture> "18:00".
-<http://ter/musee-beaux-arts> <http://ter/property/duree-visite-moyenne> "3:00".
-<http://ter/musee-beaux-arts> <http://ter/property/station-tcl> "Hôtel de Ville - Louis Pradel".
+<http://ter/musee-beaux-arts> <http://ter/property/duree-visite-moyenne> "1:25".
+<http://ter/musee-beaux-arts> <http://ter/property/station-tcl> "Hôtel de Ville".
 <http://ter/musee-beaux-arts> <http://ter/property/type> "Musée".
 <http://ter/musee-beaux-arts> <http://ter/property/pertinence> "4".
 
@@ -95,7 +95,7 @@
 <http://ter/opera-lyon> <http://ter/property/dimanche-ouverture> "20:00".
 <http://ter/opera-lyon> <http://ter/property/dimanche-fermeture> "23:00".
 <http://ter/opera-lyon> <http://ter/property/duree-visite-moyenne> "3:00".
-<http://ter/opera-lyon> <http://ter/property/station-tcl> "Hôtel de Ville - Louis Pradel".
+<http://ter/opera-lyon> <http://ter/property/station-tcl> "Hôtel de Ville".
 <http://ter/opera-lyon> <http://ter/property/type> "Opera".
 <http://ter/opera-lyon> <http://ter/property/pertinence> "5".
 

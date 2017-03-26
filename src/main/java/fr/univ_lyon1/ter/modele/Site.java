@@ -19,7 +19,7 @@ public class Site {
 	private int fermetureSamedi;
 	private int fermetureDimanche;
 	
-	private String dureeVisiteMoyenne;
+	private int dureeVisiteMoyenne;
 	private String stationTCL;
 	private String typeSite;
 	private int pertinence;
@@ -34,22 +34,22 @@ public class Site {
 		switch (i){
 			case 1: setNom(value); break;
 			case 2: setOuvertureLundi(Integer.valueOf(value));break;
-			case 3: setOuvertureMardi(Integer.valueOf(value));break;
-			case 4: setOuvertureMercredi(Integer.valueOf(value));break;
-			case 5: setOuvertureJeudi(Integer.valueOf(value));break;
-			case 6: setOuvertureVendredi(Integer.valueOf(value));break;
-			case 7: setOuvertureSamedi(Integer.valueOf(value));break;
-			case 8: setOuvertureDimanche(Integer.valueOf(value));break;
+			case 3: setFermetureLundi(Integer.valueOf(value));break;
+			case 4: setOuvertureMardi(Integer.valueOf(value));break;
+			case 5: setFermetureMardi(Integer.valueOf(value));break;
+			case 6: setOuvertureMercredi(Integer.valueOf(value));break;
+			case 7: setFermetureMercredi(Integer.valueOf(value));break;
+			case 8: setOuvertureJeudi(Integer.valueOf(value));break;
 
-			case 9: setFermetureLundi(Integer.valueOf(value));break;
-			case 10: setFermetureMardi(Integer.valueOf(value));break;
-			case 11: setFermetureMercredi(Integer.valueOf(value));break;
-			case 12: setFermetureJeudi(Integer.valueOf(value));break;
-			case 13: setFermetureVendredi(Integer.valueOf(value));break;
-			case 14: setFermetureSamedi(Integer.valueOf(value));break;
+			case 9: setFermetureJeudi(Integer.valueOf(value));break;
+			case 10: setOuvertureVendredi(Integer.valueOf(value));break;
+			case 11: setFermetureVendredi(Integer.valueOf(value));break;
+			case 12: setOuvertureSamedi(Integer.valueOf(value));break;
+			case 13: setFermetureSamedi(Integer.valueOf(value));break;
+			case 14: setOuvertureDimanche(Integer.valueOf(value));break;
 			case 15: setFermetureDimanche(Integer.valueOf(value));break;
 	
-			case 16: setDureeVisiteMoyenne(value);break;
+			case 16: setDureeVisiteMoyenne(Integer.valueOf(value));break;
 			case 17: setStationTCL(value);break;
 			case 18: setTypeSite(value);break;
 			case 19: setPertinence(Integer.parseInt(value));break;
@@ -70,6 +70,22 @@ public class Site {
 			case "dimanche": return getOuvertureDimanche();
 			default: return 5000;
 		}
+	}
+	
+	
+	
+
+	@Override
+	public String toString() {
+		return "Site [nom=" + nom + ", ouvertureLundi=" + ouvertureLundi + ", ouvertureMardi=" + ouvertureMardi
+				+ ", ouvertureMercredi=" + ouvertureMercredi + ", ouvertureJeudi=" + ouvertureJeudi
+				+ ", ouvertureVendredi=" + ouvertureVendredi + ", ouvertureSamedi=" + ouvertureSamedi
+				+ ", ouvertureDimanche=" + ouvertureDimanche + ", fermetureLundi=" + fermetureLundi
+				+ ", fermetureMardi=" + fermetureMardi + ", fermetureMercredi=" + fermetureMercredi
+				+ ", fermetureJeudi=" + fermetureJeudi + ", fermetureVendredi=" + fermetureVendredi
+				+ ", fermetureSamedi=" + fermetureSamedi + ", fermetureDimanche=" + fermetureDimanche
+				+ ", dureeVisiteMoyenne=" + dureeVisiteMoyenne + ", stationTCL=" + stationTCL + ", typeSite=" + typeSite
+				+ ", pertinence=" + pertinence + "]";
 	}
 
 	public String getNom() {
@@ -222,12 +238,12 @@ public class Site {
 	}
 
 
-	public String getDureeVisiteMoyenne() {
+	public int getDureeVisiteMoyenne() {
 		return dureeVisiteMoyenne;
 	}
 
 
-	public void setDureeVisiteMoyenne(String dureeVisiteMoyenne) {
+	public void setDureeVisiteMoyenne(int dureeVisiteMoyenne) {
 		this.dureeVisiteMoyenne = dureeVisiteMoyenne;
 	}
 

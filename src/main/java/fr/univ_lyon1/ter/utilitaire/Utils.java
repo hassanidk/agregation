@@ -3,6 +3,11 @@ package fr.univ_lyon1.ter.utilitaire;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.commons.lang3.StringUtils;
 
 import es.usc.citius.hipster.graph.GraphBuilder;
 import es.usc.citius.hipster.graph.HipsterGraph;
@@ -150,7 +155,6 @@ public class Utils {
 	}};
 	
 
-	
 	/**
 	 * 
 	 * @param sens , correspond au 
@@ -185,11 +189,11 @@ public class Utils {
 
 	public static HipsterGraph<String,Double> reseauTCL = 
 			GraphBuilder.<String,Double>create()
-			.connect("Perrache").to("Ampère - Victor Hugo").withEdge(1d)
-			.connect("Ampère - Victor Hugo").to("Bellecour").withEdge(1d)
+			.connect("Perrache").to("Ampère Victor Hugo").withEdge(1d)
+			.connect("Ampère Victor Hugo").to("Bellecour").withEdge(1d)
 			.connect("Bellecour").to("Cordeliers").withEdge(1d)
-			.connect("Cordeliers").to("Hôtel de Ville - Louis Pradel").withEdge(1d)
-			.connect("Hôtel de Ville - Louis Pradel").to("Foch").withEdge(1d)
+			.connect("Cordeliers").to("Hôtel de Ville").withEdge(1d)
+			.connect("Hôtel de Ville").to("Foch").withEdge(1d)
 			.connect("Foch").to("Massena").withEdge(1d)
 			.connect("Massena").to("Charpennes").withEdge(1d)
 			.connect("Charpennes").to("République").withEdge(1d)
@@ -197,19 +201,19 @@ public class Utils {
 			.connect("Gratte-Ciel").to("Flachet").withEdge(1d)
 			.connect("Flachet").to("Cusset").withEdge(1d)
 			.connect("Cusset").to("Laurent Bonnevay").withEdge(1d)
-			.connect("Laurent Bonnevay").to("Vaulx-en-Velin - La Soie").withEdge(1d)
+			.connect("Laurent Bonnevay").to("Vaulx La Soie").withEdge(1d)
 
 			.connect("Charpennes").to("Brotteaux").withEdge(1d)
-			.connect("Brotteaux").to("Part-Dieu").withEdge(1d)
-			.connect("Part-Dieu").to("Place Guichard").withEdge(1d)
-			.connect("Place Guichard").to("Saxe-Gambetta").withEdge(1d)
-			.connect("Saxe-Gambetta").to("Jean-Macé").withEdge(1d)
-			.connect("Jean-Macé").to("Place Jean-Jaures").withEdge(1d)
+			.connect("Brotteaux").to("Part Dieu").withEdge(1d)
+			.connect("Part Dieu").to("Place Guichard").withEdge(1d)
+			.connect("Place Guichard").to("Saxe Gambetta").withEdge(1d)
+			.connect("Saxe Gambetta").to("Jean Macé").withEdge(1d)
+			.connect("Jean Macé").to("Place Jean-Jaures").withEdge(1d)
 			.connect("Place Jean-Jaures").to("Debourg").withEdge(1d)
 			.connect("Debourg").to("Stade de Gerland").withEdge(1d)
-			.connect("Stade de Gerland").to("Gare d'Oullins").withEdge(1d)
+			.connect("Stade de Gerland").to("Gare d Oullins").withEdge(1d)
 
-			.connect("Hôtel de Ville - Louis Pradel").to("Croix-Paquet").withEdge(1d)
+			.connect("Hôtel de Ville").to("Croix-Paquet").withEdge(1d)
 			.connect("Croix-Paquet").to("Croix-Rousse").withEdge(1d)
 			.connect("Croix-Rousse").to("Henon").withEdge(1d)
 			.connect("Henon").to("Cuire").withEdge(1d)
@@ -219,8 +223,8 @@ public class Utils {
 			.connect("Gorge de Loup").to("Vieux lyon").withEdge(1d)
 			.connect("Vieux lyon").to("Bellecour").withEdge(1d)
 			.connect("Bellecour").to("Guillotiere").withEdge(1d)
-			.connect("Guillotiere").to("Saxe-Gambetta").withEdge(1d)
-			.connect("Saxe-Gambetta").to("Garibaldi").withEdge(1d)
+			.connect("Guillotiere").to("Saxe Gambetta").withEdge(1d)
+			.connect("Saxe Gambetta").to("Garibaldi").withEdge(1d)
 			.connect("Garibaldi").to("Sans-Souci").withEdge(1d)
 			.connect("Sans-Souci").to("Monplaisir-Lumiere").withEdge(1d)
 			.connect("Monplaisir-Lumiere").to("Grange-Blache").withEdge(1d)
@@ -283,6 +287,97 @@ public class Utils {
 	public static int getHeure(Calendar date){
 		return date.get(Calendar.HOUR_OF_DAY)*100 + date.get(Calendar.MINUTE);
 	}
+	/**
+	 * 
+	 * @param arretPrec
+	 * @param arretActuel
+	 * @return la ligne de métro utilisée
+	 */
+	public static String chkMetro(String arretPrec, String arretActuel){
+		arretPrec = convertToURLStyle(arretPrec);
+		arretActuel = convertToURLStyle(arretActuel);
+		
+		for (Map.Entry<String, ArrayList<String>> entry : listeArret.entrySet()) {
+		    String nomMetro = entry.getKey();
+		    ArrayList<String> arretsMetro = entry.getValue();
+		    if (arretsMetro.contains(arretPrec)){
+		    	return convertFromURLStyle(nomMetro);
+		    }else{
+		    	switch(arretPrec){
+		    		case "saxe_gambetta": 	if(arretActuel.equals("place_guichard") || arretActuel.equals("jean_mace")){
+		    									return "Metro B";
+		    								}else{
+		    									return "Metro D";
+		    								}
+		    		case "bellecour":		if(arretActuel.equals("ampere_victor_hugo") || arretActuel.equals("cordeliers")){
+												return "Metro A";
+											}else{
+												return "Metro D";
+											}
+		    		case "hotel_de_ville":	if(arretActuel.equals("cordeliers") || arretActuel.equals("foch")){
+												return "Metro A";
+											}else{
+												return "Metro C";
+											}
+		    		case "charpennes":		if(arretActuel.equals("massena") || arretActuel.equals("republique")){
+												return "Metro A";
+											}else{
+												return "Metro B";
+											}
+		    		default: break;
+		    	}
+		    }
+		    
+		}
+
+
+				
+		return "";
+	}
+	/**
+	 * 
+	 * @param arret
+	 * @return une chaine sans accent, sous forme URL like
+	 */
+	public static String convertToURLStyle(String arret){
+		String arretURL = arret.toLowerCase();
+		arretURL = StringUtils.strip(arretURL);
+		arretURL = arretURL.replaceAll("[ ]", "_");
+		return arretURL;
+	}
+	
+	public static String convertFromURLStyle(String metro){
+		switch(metro){
+			case "metro_a": return "Metro A";
+			case "metro_b": return "Metro B";
+			case "metro_c": return "Metro C";
+			case "metro_d": return "Metro D";
+			default: return "Error convertion";
+		}
+	}
+	/**
+	 * 
+	 * @param arretsMetro
+	 * IL faut stocker l'arret PRecedent, et l'arretSuivant de l'array list
+	 * Iterer dans la HashMap globale pour voir sur quel ligne il se trouve
+	 * Une fois qu'on a la ligne, on rajoute avant l'arret dans l'array list la ligne de metro
+	 * Si on tombe sur le cas de Gambetta, Bellecour HDV, CHarpennes :
+	 * On verifie si on reste sur la meme ligne.
+	 */
+	public static void getItineraireMetro(List<String> arretsMetro){
+		String arretPrec =arretsMetro.get(0);
+		String tempMetro;
+		String metro ;
+		boolean firstElem = true;
+		for (String arret : arretsMetro){
+			if (firstElem){
+				metro = chkMetro(arret, arretsMetro.get(1));
+				firstElem = false;
+			}
+			arretPrec = arret;
+		}	
+	}
+	
 	
 	
 	

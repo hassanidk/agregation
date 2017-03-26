@@ -2,6 +2,7 @@ package fr.univ_lyon1.ter.modele;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.concurrent.ExecutorService;
@@ -15,29 +16,39 @@ import org.apache.jena.riot.lang.PipedTriplesStream;
 
 import com.github.andrewoma.dexx.collection.HashMap;
 
+import es.usc.citius.hipster.algorithm.Algorithm.SearchResult;
 import es.usc.citius.hipster.algorithm.Hipster;
 import es.usc.citius.hipster.graph.GraphSearchProblem;
+import es.usc.citius.hipster.model.Node;
+import es.usc.citius.hipster.model.impl.WeightedNode;
 import es.usc.citius.hipster.model.problem.SearchProblem;
-import fr.univ_lyon1.ter.utilitaire.CompareSite;
+
+import fr.univ_lyon1.ter.override.CompareSite;
+import fr.univ_lyon1.ter.override.ResultatRecherche;
 import fr.univ_lyon1.ter.utilitaire.Utils;
 
 public class Aggregation {
 	//Need : Horaire TCL et Sites
 	//Need : La durée de visite
-	private Calendar arrivee;
-	private Calendar depart;
+	private int arrivee;
+	private int depart;
+	private String jour; // Permet de savoir sur quel jour on fait la requete
 	private ArrayList<String>preferences;
-	private HashMap<String, ArrayList<Site>> cheminSite;
+	private ArrayList<InformationItineraire> itineraire;
 	private ArrayList<Site> listeSite;
 	
 	public Aggregation(Calendar arrivee, Calendar depart, ArrayList<String> preferences){
-		this.arrivee = arrivee;
-		this.depart = depart;
+		this.arrivee = Utils.getHeure(arrivee);
+		this.depart = Utils.getHeure(depart);
 		this.preferences = preferences;
-		this.cheminSite = new HashMap<String, ArrayList<Site>>();
+		this.jour = Utils.getDay(arrivee);
+		this.itineraire = new ArrayList<InformationItineraire>();
 		this.listeSite = new ArrayList<Site>(); 
 	}
-	
+	/**
+	 * Permet de récuperer l'ensemble des sites situés sur le fichier de type RDF
+	 * Crée nos objets en java
+	 */
 	private void getAllSites(){
 		int i = 0;
 		PipedRDFIterator<Triple> iter = new PipedRDFIterator<Triple>();
@@ -72,12 +83,13 @@ public class Aggregation {
 		listeSite.remove(0);
 		executor.shutdown();
 	}
-	// Méthode qui permet d'avoir les sites que l'utilisateurs souhaite visiter
-	public void getSites(){
-		// On charges tous les sites
+	
+	// Méthode qui permet d'avoir les sites que l'utilisateur souhaite visiter
+	private void getSites(){
+		// On charge tous les sites
 		getAllSites();
 		// Si y'a 0 preferences, on garde tous les sites
-		// SI y'a preferences, on supprimes les sites site qui ne sont pas dans preferences
+		// SI y'a preferences, on supprime les sites qui ne sont pas dans preferences
 		if (preferences.size()!=0){
 			Iterator<Site> it = listeSite.iterator();
 			while (it.hasNext()){
@@ -95,35 +107,98 @@ public class Aggregation {
 	 * L'objectif est de partir de la Part Dieu, visiter les sites possibles,
 	 * pus revenir à la part-dieu avant l'heure où l'utilisateur quitte la ville
 	 */
-	public void getItineraire(){
-		String arretDepart = "Part-Dieu";
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	private void getItineraire(){
+		String arretDepart = "Part Dieu";
 		String arretArrivee ="";
-		String jour = Utils.getDay(arrivee);
+		int heureActuelle = arrivee;
+		int heureTemp = 0;
+		int dureeVisiteSite = 0;
+		int heureDepart = depart;
 		Iterator<Site> it = listeSite.iterator();
+		boolean premiereIteration = true;
 	
 		while(it.hasNext()){
 			Site site = it.next();
 			int horaire = site.getHorraireOuverture(jour);
+			
 			if (horaire!=5000){
+				
 				SearchProblem p = GraphSearchProblem
 			              .startingFrom(arretDepart)
 			              .in(Utils.reseauTCL)
 			              .takeCostsFromEdges()
 			              .build();
+				SearchProblem q = GraphSearchProblem
+			              .startingFrom(arretDepart)
+			              .in(Utils.reseauTCL)
+			              .takeCostsFromEdges()
+			              .build();
+						
 				arretArrivee = site.getStationTCL();
-				System.out.println(arretDepart);
-				// Tu fais dijkstra
-				System.out.println(Hipster.createDijkstra(p).search(arretArrivee));
-				//Tu verifie que tu peux retourner a part dieu avant l'heure de depart
-				// (Tu prend le temps de parcours * 2 et tu compare a l'heure de depart
-				// SI oui tu l'ajoute aux site à visiter
-				// Si non tu supprimes le site et t
-				arretDepart = arretArrivee;
-			
+				// Création de deux dijstra. 
+				// Calcule le plus court chemin vers site touristique
+				SearchResult versSiteTouristique = Hipster.createDijkstra(p).search(arretArrivee);
+				// Calcule le plus court chemin vers part dieu
+				SearchResult versPartDieu = Hipster.createDijkstra(q).search("Part-Dieu");
+				//Permet d'avoir la durée d'un intineraire
+				int t_vers_site  = (int)Double.parseDouble(new ResultatRecherche(versSiteTouristique.getGoalNode()).toString());
+				int t_vers_part_dieu = (int)Double.parseDouble(new ResultatRecherche(versPartDieu.getGoalNode()).toString());
+				
+				t_vers_site = Utils.checkHour(t_vers_site);
+				t_vers_part_dieu = Utils.checkHour(t_vers_part_dieu);
+				
+				// Check le temps_itineraire 
+				if(premiereIteration){
+					premiereIteration = false;
+					heureTemp = heureActuelle + 2*t_vers_site + site.getDureeVisiteMoyenne();
+				}else{
+					heureTemp = heureActuelle + t_vers_site + t_vers_part_dieu + site.getDureeVisiteMoyenne();
+				}
+				dureeVisiteSite = heureActuelle + t_vers_site + site.getDureeVisiteMoyenne();
+				
+				heureTemp = Utils.checkHour(heureTemp);
+				dureeVisiteSite = Utils.checkHour(dureeVisiteSite);
+				if (heureTemp < heureDepart){ // Rajouter une tolérance au départ
+					itineraire.add(new InformationItineraire(heureActuelle,site.getNom(),arretDepart, arretArrivee, versSiteTouristique.getOptimalPaths(), dureeVisiteSite));
+					heureActuelle = heureActuelle + t_vers_site + site.getDureeVisiteMoyenne();
+					heureActuelle = Utils.checkHour(heureActuelle);
+					arretDepart = arretArrivee;
+				}else{
+					it.remove();
+				}	
 			}else{
 				it.remove();
 			}
-			
+		} // Fin while
+		
+		// On rajoute un dernier chemin. Celui qui permet de se rendre à la Part-Dieu
+		System.out.println(itineraire.size());
+		if (itineraire.size()!=0){
+			String arretDernierSite = itineraire.get(itineraire.size()-1 ).getArretSite();
+			SearchProblem p = GraphSearchProblem
+		              .startingFrom(arretDernierSite)
+		              .in(Utils.reseauTCL)
+		              .takeCostsFromEdges()
+		              .build();
+			SearchResult versPartDieu = Hipster.createDijkstra(p).search("Part-Dieu");
+			int t_vers_part_dieu = (int)Double.parseDouble(new ResultatRecherche(versPartDieu.getGoalNode()).toString());
+			t_vers_part_dieu = Utils.checkHour(t_vers_part_dieu + heureActuelle);
+			itineraire.add(new InformationItineraire(heureActuelle,"Gare Part-Dieu",arretDernierSite,"Part Dieu", versPartDieu.getOptimalPaths(), t_vers_part_dieu));
+		}
+	}
+	
+	// Méthode qui permet de faire correspondre les temps avec les temps TCL
+	public void calculResultat(){
+		
+	}
+	
+	public void affichageResultat(){
+		getSites();
+		getItineraire();
+		System.out.println(Utils.convertToURLStyle("Part Dieu"));
+		for (InformationItineraire i: itineraire){
+			System.out.println(i);
 		}
 	}
 

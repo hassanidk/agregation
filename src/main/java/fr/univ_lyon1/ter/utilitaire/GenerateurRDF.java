@@ -1,13 +1,42 @@
 package fr.univ_lyon1.ter.utilitaire;
 
-import java.util.Map;
+import static fr.univ_lyon1.ter.utilitaire.ListeInverse.inverse;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Calendar;
-import static fr.univ_lyon1.ter.utilitaire.ListeInverse.inverse;
+import java.util.Map;
 
 public class GenerateurRDF {
+	private Calendar arrivee;
+	private Calendar depart;
+	
+	public GenerateurRDF(Calendar arrivee, Calendar depart){
+		this.arrivee = arrivee;
+		this.depart = depart;
+	}
+	
+	
+	public Calendar getArrivee() {
+		return arrivee;
+	}
+
+
+	public void setArrivee(Calendar arrivee) {
+		this.arrivee = arrivee;
+	}
+
+
+	public Calendar getDepart() {
+		return depart;
+	}
+
+
+	public void setDepart(Calendar depart) {
+		this.depart = depart;
+	}
+
 
 	/**
 	 * @param arrivee
@@ -18,7 +47,7 @@ public class GenerateurRDF {
 	 *            Part-Dieu
 	 */
 
-	public void mise_a_jour_horraire(Calendar arrivee, Calendar depart) {
+	public void mise_a_jour_horraire() {
 		try {
 			int i;
 			int indice;
@@ -92,6 +121,9 @@ public class GenerateurRDF {
 			writer.close();
 			System.out.println("----Génération terminée----");
 		} catch (IOException e) {
+			System.out.println(e.getMessage());
 		}
 	}
+	
+
 }

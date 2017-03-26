@@ -2,7 +2,6 @@ package fr.univ_lyon1.ter.modele;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.concurrent.ExecutorService;
@@ -14,17 +13,13 @@ import org.apache.jena.riot.lang.PipedRDFIterator;
 import org.apache.jena.riot.lang.PipedRDFStream;
 import org.apache.jena.riot.lang.PipedTriplesStream;
 
-import com.github.andrewoma.dexx.collection.HashMap;
-
 import es.usc.citius.hipster.algorithm.Algorithm.SearchResult;
 import es.usc.citius.hipster.algorithm.Hipster;
 import es.usc.citius.hipster.graph.GraphSearchProblem;
-import es.usc.citius.hipster.model.Node;
-import es.usc.citius.hipster.model.impl.WeightedNode;
 import es.usc.citius.hipster.model.problem.SearchProblem;
-
 import fr.univ_lyon1.ter.override.CompareSite;
 import fr.univ_lyon1.ter.override.ResultatRecherche;
+import fr.univ_lyon1.ter.utilitaire.GenerateurRDF;
 import fr.univ_lyon1.ter.utilitaire.Utils;
 
 public class Aggregation {
@@ -36,6 +31,8 @@ public class Aggregation {
 	private ArrayList<String>preferences;
 	private ArrayList<InformationItineraire> itineraire;
 	private ArrayList<Site> listeSite;
+	private String partDieu = "Part Dieu";
+	GenerateurRDF generateur;
 	
 	public Aggregation(Calendar arrivee, Calendar depart, ArrayList<String> preferences){
 		this.arrivee = Utils.getHeure(arrivee);
@@ -44,6 +41,7 @@ public class Aggregation {
 		this.jour = Utils.getDay(arrivee);
 		this.itineraire = new ArrayList<InformationItineraire>();
 		this.listeSite = new ArrayList<Site>(); 
+		this.generateur = new GenerateurRDF(arrivee, depart);
 	}
 	/**
 	 * Permet de récuperer l'ensemble des sites situés sur le fichier de type RDF
@@ -102,6 +100,7 @@ public class Aggregation {
 		}
 		// ON reorganise avec la pertinence du site
 		Collections.sort(listeSite, new CompareSite());	
+		
 	}
 	/**
 	 * L'objectif est de partir de la Part Dieu, visiter les sites possibles,
@@ -109,7 +108,7 @@ public class Aggregation {
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private void getItineraire(){
-		String arretDepart = "Part Dieu";
+		String arretDepart = partDieu;
 		String arretArrivee ="";
 		int heureActuelle = arrivee;
 		int heureTemp = 0;
@@ -140,7 +139,7 @@ public class Aggregation {
 				// Calcule le plus court chemin vers site touristique
 				SearchResult versSiteTouristique = Hipster.createDijkstra(p).search(arretArrivee);
 				// Calcule le plus court chemin vers part dieu
-				SearchResult versPartDieu = Hipster.createDijkstra(q).search("Part-Dieu");
+				SearchResult versPartDieu = Hipster.createDijkstra(q).search(partDieu);
 				//Permet d'avoir la durée d'un intineraire
 				int t_vers_site  = (int)Double.parseDouble(new ResultatRecherche(versSiteTouristique.getGoalNode()).toString());
 				int t_vers_part_dieu = (int)Double.parseDouble(new ResultatRecherche(versPartDieu.getGoalNode()).toString());
@@ -160,7 +159,7 @@ public class Aggregation {
 				heureTemp = Utils.checkHour(heureTemp);
 				dureeVisiteSite = Utils.checkHour(dureeVisiteSite);
 				if (heureTemp < heureDepart){ // Rajouter une tolérance au départ
-					itineraire.add(new InformationItineraire(heureActuelle,site.getNom(),arretDepart, arretArrivee, versSiteTouristique.getOptimalPaths(), dureeVisiteSite));
+					itineraire.add(new InformationItineraire(heureActuelle,site.getNom(),arretDepart, arretArrivee, versSiteTouristique.getOptimalPaths(), dureeVisiteSite, site.getDureeVisiteMoyenne()));
 					heureActuelle = heureActuelle + t_vers_site + site.getDureeVisiteMoyenne();
 					heureActuelle = Utils.checkHour(heureActuelle);
 					arretDepart = arretArrivee;
@@ -173,7 +172,7 @@ public class Aggregation {
 		} // Fin while
 		
 		// On rajoute un dernier chemin. Celui qui permet de se rendre à la Part-Dieu
-		System.out.println(itineraire.size());
+		
 		if (itineraire.size()!=0){
 			String arretDernierSite = itineraire.get(itineraire.size()-1 ).getArretSite();
 			SearchProblem p = GraphSearchProblem
@@ -181,25 +180,40 @@ public class Aggregation {
 		              .in(Utils.reseauTCL)
 		              .takeCostsFromEdges()
 		              .build();
-			SearchResult versPartDieu = Hipster.createDijkstra(p).search("Part-Dieu");
+			SearchResult versPartDieu = Hipster.createDijkstra(p).search(partDieu);
 			int t_vers_part_dieu = (int)Double.parseDouble(new ResultatRecherche(versPartDieu.getGoalNode()).toString());
 			t_vers_part_dieu = Utils.checkHour(t_vers_part_dieu + heureActuelle);
-			itineraire.add(new InformationItineraire(heureActuelle,"Gare Part-Dieu",arretDernierSite,"Part Dieu", versPartDieu.getOptimalPaths(), t_vers_part_dieu));
+			itineraire.add(new InformationItineraire(heureActuelle,"Gare Part-Dieu",arretDernierSite, partDieu, versPartDieu.getOptimalPaths(), t_vers_part_dieu, 0));
 		}
+		
 	}
 	
 	// Méthode qui permet de faire correspondre les temps avec les temps TCL
 	public void calculResultat(){
+		generateur.mise_a_jour_horraire();
+		getSites();
+		getItineraire();
+		
+	
+		
+		for (InformationItineraire i: itineraire){
+			i.setCheminItineraire(Utils.getItineraireMetro(i.getHeureItineraire(),i.getCheminItineraire()));
+			System.out.println(i);
+			
+			
+		}
 		
 	}
 	
 	public void affichageResultat(){
-		getSites();
-		getItineraire();
-		System.out.println(Utils.convertToURLStyle("Part Dieu"));
-		for (InformationItineraire i: itineraire){
-			System.out.println(i);
-		}
+		
+		calculResultat();
+		
+	}
+	
+	public void changementHorraire(Calendar arrivee, Calendar depart){
+		generateur.setArrivee(arrivee);
+		generateur.setDepart(depart);
 	}
 
 }

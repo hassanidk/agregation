@@ -2,6 +2,8 @@ package fr.univ_lyon1.ter.modele;
 
 import java.util.List;
 
+import fr.univ_lyon1.ter.utilitaire.Utils;
+
 public class InformationItineraire {
 	private int heureItineraire;
 	private String nomSite;
@@ -9,6 +11,7 @@ public class InformationItineraire {
 	private String arretSite;
 	private List<String> cheminItineraire;
 	private int coutItineraire;
+	private int dureeVisite;
 	
 	/**
 	 * 
@@ -17,7 +20,7 @@ public class InformationItineraire {
 	 * @param cheminItineraire chemin de l'itineraire entre un point X de depart et le site touristique
 	 * @param coutItineraire cout (heure/minute) de l'itineraire + dureedevisite de site (Correspond a l'heure ou on quitte le site)
 	 */
-	public InformationItineraire(int heureItineraire,String nomSite,String arretFrom, String arretSite, List<List<String>> cheminItineraire, int coutItineraire) {
+	public InformationItineraire(int heureItineraire,String nomSite,String arretFrom, String arretSite, List<List<String>> cheminItineraire, int coutItineraire, int dureeVisite) {
 		
 		this.heureItineraire = heureItineraire;
 		this.nomSite = nomSite;
@@ -25,6 +28,15 @@ public class InformationItineraire {
 		this.arretSite =arretSite;
 		this.cheminItineraire = cheminItineraire.get(0);
 		this.coutItineraire = coutItineraire;
+		this.dureeVisite = dureeVisite;
+	}
+
+	public int getDureeVisite() {
+		return dureeVisite;
+	}
+
+	public void setDureeVisite(int dureeVisite) {
+		this.dureeVisite = dureeVisite;
 	}
 
 	public int getHeureItineraire() {
@@ -77,9 +89,45 @@ public class InformationItineraire {
 
 	@Override
 	public String toString() {
-		return "InformationItineraire [heureItineraire=" + heureItineraire + ", nomSite=" + nomSite + ", arretFrom="
-				+ arretFrom + ", arretSite=" + arretSite + ", cheminItineraire=" + cheminItineraire
-				+ ", coutItineraire=" + coutItineraire + "]";
+		String txt="Pour vous rendre au site: "+nomSite+"\n";
+		boolean verifArret = false;
+		boolean firstElem = true;
+		String elemPrec ="";
+		for (String elem : cheminItineraire){
+			if (verifArret){
+				if (firstElem){
+					txt = txt+" à l'arret "+elem;
+					firstElem = false;
+				}else{
+					
+				}
+				verifArret = false;
+			}
+			if (elem.contains("Direction")){
+				if (firstElem){
+					txt = txt+ "Prenez le "+elem;
+				}else{
+					txt = txt+"\nDescendez à l'arrêt "+elemPrec+" et prenez le "+elem;
+				}
+				if (firstElem ==false)
+					txt = txt+" à l'arret "+elemPrec;
+			}
+			if (elem.matches(".*\\d+.*")){
+				int heures = Integer.valueOf(elem);
+				txt = txt+ " à "+Utils.getHour(heures)+"h"+ Utils.getMin(heures);
+				verifArret = true;
+			}
+			elemPrec = elem;
+		}
+		if (dureeVisite !=0){
+			txt = txt+"\nDescendez à l'arret "+arretSite+". Le site est à quelques minutes de l'arrêt de métro.\nNous vous conseillons d'y rester "+ dureeVisite+" minutes, afin de profiter au maximum de la Ville de Lyon";
+		}else{
+			txt = txt+"\nDescendez à la Gare-Part Dieu. Nous vous souhaitons un agréable voyage, et esperons que vous revoir au plus vite";
+		}
+		return txt+"\n";
+//		return "InformationItineraire [heureItineraire=" + heureItineraire + ", nomSite=" + nomSite + ", arretFrom="
+//				+ arretFrom + ", arretSite=" + arretSite + ", cheminItineraire=" + cheminItineraire
+//				+ ", coutItineraire=" + coutItineraire + "]";
 	}
 
 	

@@ -46,4 +46,19 @@ developpements et tests rapides des différentes fonctionalités
 		Les paramètres nous permettent de restreindre, à chaque
 		reqûete, la topologie du réseau entre deux temps
 
+	// A COMPLETER
+Explications des taches effectués par date
+----------------------------------------------------------------
+Semaine du 28 mars
+	- Récupération des sites, et tri par pertinence des sites
+	- Affichage des circuits de site à visiter en fonction des
+	critères de recherches (Musée, parc ...)
+	- Affichage dans la console des sites à visiter, avec leurs
+	itinéraires metro (Avec les heures ou il faut prendre le métro
+	)
+	- /!\ PAS DE MAXIMISATION DES SITES A VISITER. ON privilégie
+	la qualité à la quantité ...
+
+	Bugs : Thread qui est interropu brusquement, risque de fuite
+			mémoire
 

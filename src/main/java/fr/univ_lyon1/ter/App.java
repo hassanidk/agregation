@@ -14,7 +14,7 @@ public class App {
 			
 		
 		ArrayList<String> preferences =new ArrayList<String>();
-		preferences.add("Parc");
+		
 		Aggregation agg = new Aggregation(arrivee,depart,preferences);
 		
 		agg.affichageResultat();

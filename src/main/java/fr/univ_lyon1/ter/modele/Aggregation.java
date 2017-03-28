@@ -193,9 +193,12 @@ public class Aggregation {
 		generateur.mise_a_jour_horraire();
 		getSites();
 		getItineraire();
-		
-	
-		
+		System.out.println("Nous vous proposons le circuit suivant : ");
+		for (InformationItineraire i : itineraire){
+			if (i.getNomSite()!="Gare Part-Dieu")
+			System.out.println("-"+i.getNomSite());
+		}
+		System.out.println(" ---- ");
 		for (InformationItineraire i: itineraire){
 			i.setCheminItineraire(Utils.getItineraireMetro(i.getHeureItineraire(),i.getCheminItineraire()));
 			System.out.println(i);

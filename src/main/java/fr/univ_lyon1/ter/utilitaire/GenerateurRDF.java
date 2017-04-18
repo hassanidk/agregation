@@ -53,6 +53,7 @@ public class GenerateurRDF {
 			int indice;
 			int heure_actuelle = arrivee.get(Calendar.HOUR_OF_DAY) * 100 + arrivee.get(Calendar.MINUTE);
 			int depart_precedent = heure_actuelle;
+			
 			boolean sens = true; // True = A vers B || False B vers A
 			int periode = Utils.getPeriode(arrivee); // Semaine / Week End /// Vacances
 			int heure_depart = depart.get(Calendar.HOUR_OF_DAY) * 100 + depart.get(Calendar.MINUTE);

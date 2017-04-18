@@ -1,12 +1,22 @@
 package fr.univ_lyon1.ter.utilitaire;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.ServletContext;
+
 import org.apache.commons.lang3.StringUtils;
+import org.codehaus.jettison.json.JSONArray;
+import org.codehaus.jettison.json.JSONException;
+import org.codehaus.jettison.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.github.jsonldjava.core.Context;
 
 import es.usc.citius.hipster.graph.GraphBuilder;
 import es.usc.citius.hipster.graph.HipsterGraph;
@@ -18,8 +28,9 @@ import es.usc.citius.hipster.graph.HipsterGraph;
  */
 public class Utils {
 	
-	public static final String file_horraire_tcl = System.getProperty("user.dir")+ "/resources/HorraireTCL.nt";
-	public static final String file_sites_lyon = System.getProperty("user.dir")+ "/resources/SitesLyon.nt";
+	public static final String file_horraire_tcl = System.getProperty("user.dir") + "/resources/HorraireTCL.nt";
+	public static final String file_sites_lyon = System.getProperty("user.dir") + "/resources/SitesLyon.nt";
+	public static boolean _DEBUG_MODE = true;
 	
 	@SuppressWarnings("serial")
 	static final ArrayList<String> metro_a = new ArrayList<String>() {{
@@ -413,9 +424,14 @@ public class Utils {
 		int horraire = heure;
 		boolean sens = true;
 		boolean firstElem = true;
+		// MAJ
+		if (arretsMetro.size() == 1){
+			arretMetro.add( arretPrec);
+			return arretMetro;
+		}
+		//FIN MAJ
 		for (String arret : arretsMetro){
 			if (firstElem){
-				
 				metro = chkMetro(arret, arretsMetro.get(1));
 				metroTemp = metro;
 				direction = getDirectionMetro(metro, arret, arretsMetro.get(1));
@@ -468,6 +484,44 @@ public class Utils {
 		return metroURL;
 	}
 	
+	public static String getMetroJSON(String direction){
+		return convertFromURLStyle(getMetro(direction));
+	}
+	
+	public static Calendar constructCalendar(String[] journee, String[] heure){
+		int annee = Integer.parseInt(journee[0]);
+		int mois = Integer.parseInt(journee[1]);
+		int jour = Integer.parseInt(journee[2]);
+		int hour = Integer.parseInt(heure[0]);
+		int min = Integer.parseInt(heure[1]);
+		Calendar day = new GregorianCalendar(annee,mois,jour,hour,min,0);
+		return day;
+		
+	}
+	
+	public static JSONArray setJSONArray(String _metro, int _heure, String _depart, String _arrivee){
+		JSONArray jarr = new JSONArray();
+		JSONObject metro = new JSONObject();
+		JSONObject heure = new JSONObject();
+		JSONObject depart = new JSONObject();
+		JSONObject arrivee = new JSONObject();
+		
+		try {
+			metro.put("metro", _metro);
+			heure.put("heure", _heure);
+			depart.put("depart", _depart);
+			arrivee.put("arrivee", _arrivee);
+			jarr.put(metro);
+			jarr.put(heure);
+			jarr.put(depart);
+			jarr.put(arrivee);
+		} catch (JSONException e) {
+			System.out.println(e.getMessage());
+		}
+		
+		return jarr;
+		
+	}
 	
 	
 	

@@ -197,7 +197,7 @@
 <http://ter/part-dieu> <http://ter/property/duree-visite-moyenne> "1:00".
 <http://ter/part-dieu> <http://ter/property/station-tcl> "Part Dieu".
 <http://ter/part-dieu> <http://ter/property/type> "Quartier".
-<http://ter/part-dieu> <http://ter/property/pertinence> "3".
+<http://ter/part-dieu> <http://ter/property/pertinence> "6".
 
 <http://ter/gerland> <http://ter/property/nom> "Le quartier de Gerland".
 <http://ter/gerland> <http://ter/property/lundi-ouverture> "08:00".

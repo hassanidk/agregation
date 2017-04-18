@@ -19,6 +19,7 @@ import es.usc.citius.hipster.graph.GraphSearchProblem;
 import es.usc.citius.hipster.model.problem.SearchProblem;
 import fr.univ_lyon1.ter.override.CompareSite;
 import fr.univ_lyon1.ter.override.ResultatRecherche;
+import fr.univ_lyon1.ter.utilitaire.Debug;
 import fr.univ_lyon1.ter.utilitaire.GenerateurRDF;
 import fr.univ_lyon1.ter.utilitaire.Utils;
 
@@ -80,26 +81,43 @@ public class Aggregation {
 		listeSite.add(site);
 		listeSite.remove(0);
 		executor.shutdown();
+		
+		
 	}
 	
 	// Méthode qui permet d'avoir les sites que l'utilisateur souhaite visiter
 	private void getSites(){
 		// On charge tous les sites
 		getAllSites();
+		
+		int i;
 		// Si y'a 0 preferences, on garde tous les sites
 		// SI y'a preferences, on supprime les sites qui ne sont pas dans preferences
 		if (preferences.size()!=0){
 			Iterator<Site> it = listeSite.iterator();
 			while (it.hasNext()){
 				Site site = it.next();
-				for (String pref : preferences){
-					if (!pref.equals(site.getTypeSite()))
-						it.remove();
+				i = 0;
+				for (String pref: preferences){
+					if (!pref.equals(site.getTypeSite())){
+						i--;
+					}else{
+						i++;
+					}
 				}
+				if (i<0)
+					it.remove();
 			}
 		}
 		// ON reorganise avec la pertinence du site
+		if (Utils._DEBUG_MODE){
+			Debug.addDebug("preference", preferences.size());
+			Debug.addDebug("listeSite de getSite() au debut", listeSite.size());
+		}
 		Collections.sort(listeSite, new CompareSite());	
+		if (Utils._DEBUG_MODE){
+			Debug.addDebug("listeSite de getSites()", listeSite.size());
+		}
 		
 	}
 	/**
@@ -186,6 +204,7 @@ public class Aggregation {
 			itineraire.add(new InformationItineraire(heureActuelle,"Gare Part-Dieu",arretDernierSite, partDieu, versPartDieu.getOptimalPaths(), t_vers_part_dieu, 0));
 		}
 		
+		
 	}
 	
 	// Méthode qui permet de faire correspondre les temps avec les temps TCL
@@ -193,26 +212,35 @@ public class Aggregation {
 		generateur.mise_a_jour_horraire();
 		getSites();
 		getItineraire();
+		
+		
+	}
+	// Méthode pour afficher en mode Console. Run like Java Application
+	public void affichageResultat(){
+		calculResultat();
 		System.out.println("Nous vous proposons le circuit suivant : ");
 		for (InformationItineraire i : itineraire){
 			if (i.getNomSite()!="Gare Part-Dieu")
 			System.out.println("-"+i.getNomSite());
 		}
 		System.out.println(" ---- ");
+		
 		for (InformationItineraire i: itineraire){
 			i.setCheminItineraire(Utils.getItineraireMetro(i.getHeureItineraire(),i.getCheminItineraire()));
-			System.out.println(i);
+			System.out.println("--JSON--");
+			System.out.println(i.getJSONItineraire());
+			System.out.println("--CONSOLE--");
+			System.out.println(i);	
 			
 			
 		}
 		
+		
+		if (Utils._DEBUG_MODE)
+			Debug.printDebug();
+		
 	}
 	
-	public void affichageResultat(){
-		
-		calculResultat();
-		
-	}
 	
 	public void changementHorraire(Calendar arrivee, Calendar depart){
 		generateur.setArrivee(arrivee);

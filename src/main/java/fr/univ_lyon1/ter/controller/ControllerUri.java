@@ -19,6 +19,7 @@ import org.springframework.core.io.ResourceLoader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import fr.univ_lyon1.ter.modele.Aggregation;
@@ -36,14 +37,14 @@ public class ControllerUri {
 	// ------- Redirige vers l'index de l'application
 	@RequestMapping(value = { "/", "/index" })
 	public String index() {
-		return "JSP/index.jsp";
+		return "index";
 	}
-	@RequestMapping(value = {"/result"}, method = RequestMethod.POST)
-	public ModelAndView getResult(@RequestParam String preferences, 
+	@RequestMapping(value = {"/result"}, method = RequestMethod.POST ,produces = "application/json")
+	public @ResponseBody String getResult(@RequestParam String preferences, 
 			@RequestParam String dateJour, 
 			@RequestParam String heureArrivee, 
 			@RequestParam String heureDepart){
-		ModelAndView model = new ModelAndView("JSP/index.jsp");
+		
 
 		ArrayList<String> pref = new ArrayList<String>();
 		String [] elementJour = dateJour.split("-");
@@ -57,7 +58,7 @@ public class ControllerUri {
 				pref.add(prefs[i]);
 		}
 		Aggregation agg = new Aggregation(arrivee, depart, pref);
-		agg.affichageResultat();
+		
 		if (Utils._DEBUG_MODE){
 			Debug.addDebug("--CONTROLLER URI--", "Début");
 			Debug.addDebug("preferences", preferences);
@@ -69,9 +70,10 @@ public class ControllerUri {
 			Debug.addDebug("--CONTROLLER URI--", "Fin");
 			
 		}
+		return agg.affichageResultatWeb();
 		
 
-		return model;
+		
 	}
 
 

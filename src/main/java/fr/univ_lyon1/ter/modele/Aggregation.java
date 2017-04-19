@@ -208,10 +208,14 @@ public class Aggregation {
 	}
 	
 	// Méthode qui permet de faire correspondre les temps avec les temps TCL
-	public void calculResultat(){
+	private void calculResultat(){
 		generateur.mise_a_jour_horraire();
 		getSites();
 		getItineraire();
+		for (InformationItineraire i: itineraire)
+			i.setCheminItineraire(Utils.getItineraireMetro(i.getHeureItineraire(),i.getCheminItineraire()));
+		
+			
 		
 		
 	}
@@ -221,25 +225,28 @@ public class Aggregation {
 		System.out.println("Nous vous proposons le circuit suivant : ");
 		for (InformationItineraire i : itineraire){
 			if (i.getNomSite()!="Gare Part-Dieu")
-			System.out.println("-"+i.getNomSite());
+				System.out.println("-"+i.getNomSite());
 		}
 		System.out.println(" ---- ");
-		
-		for (InformationItineraire i: itineraire){
-			i.setCheminItineraire(Utils.getItineraireMetro(i.getHeureItineraire(),i.getCheminItineraire()));
-			System.out.println("--JSON--");
-			System.out.println(i.getJSONItineraire());
-			System.out.println("--CONSOLE--");
+		for (InformationItineraire i: itineraire)
 			System.out.println(i);	
-			
-			
-		}
-		
-		
 		if (Utils._DEBUG_MODE)
 			Debug.printDebug();
 		
 	}
+	
+	public String affichageResultatWeb(){
+		calculResultat();
+		String result ="[";
+		for (InformationItineraire i: itineraire){
+			result = result+ i.getJSONItineraire();
+			result = result+",";
+		}
+		result = result.substring(0, result.length()-1);
+		result = result +"]";
+		return result;
+	}
+	
 	
 	
 	public void changementHorraire(Calendar arrivee, Calendar depart){

@@ -145,6 +145,7 @@ public class InformationItineraire {
 		try{
 			JSONObject jobjroot = new JSONObject();
 			jobjroot.put("nomSite", nomSite);
+			jobjroot.put("dureeVisite", dureeVisite);
 			if (cheminItineraire.size()==1){
 				JSONArray jarr = Utils.setJSONArray("pied", heureItineraire, cheminItineraire.get(0), cheminItineraire.get(0));
 				jobjroot.put("itineraire0", jarr);
@@ -178,7 +179,7 @@ public class InformationItineraire {
 							second = true;
 						}
 						metro = Utils.getMetroJSON(cheminItineraire.get(i));
-						heure = Integer.parseInt(cheminItineraire.get(i+1));
+						heure = Integer.parseInt(cheminItineraire.get(i+1)) - 10;
 						
 					}
 					i++;

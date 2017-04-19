@@ -15,7 +15,7 @@ public class App {
 			
 		
 		ArrayList<String> preferences =new ArrayList<String>();
-		//preferences.add("Musée");
+		preferences.add("Musée");
 		
 		
 		Aggregation agg = new Aggregation(arrivee,depart,preferences);

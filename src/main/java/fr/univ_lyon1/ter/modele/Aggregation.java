@@ -12,6 +12,7 @@ import org.apache.jena.riot.RDFDataMgr;
 import org.apache.jena.riot.lang.PipedRDFIterator;
 import org.apache.jena.riot.lang.PipedRDFStream;
 import org.apache.jena.riot.lang.PipedTriplesStream;
+import org.codehaus.jettison.json.JSONException;
 
 import es.usc.citius.hipster.algorithm.Algorithm.SearchResult;
 import es.usc.citius.hipster.algorithm.Hipster;
@@ -239,7 +240,8 @@ public class Aggregation {
 		calculResultat();
 		String result ="[";
 		for (InformationItineraire i: itineraire){
-			result = result+ i.getJSONItineraire();
+			//result = result+ i.getJSONItineraire();
+			result = result+ i.setJSON();
 			result = result+",";
 		}
 		result = result.substring(0, result.length()-1);

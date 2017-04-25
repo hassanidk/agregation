@@ -12,6 +12,7 @@ and open the template in the editor.
                 <link href="resources/css/index.css" rel="stylesheet"> 
 	</head> 
 	<body>
+	<!-- <form method ="post" action="result">-->
 	<form method ="post" action="result">
 		<input type = "text" name="preferences" placeholder="Ex: Musée, Quartier..">
 		<input type = "date" name= "dateJour" min ="2017-01-21">
@@ -19,6 +20,7 @@ and open the template in the editor.
 		<input type = "time" name= "heureDepart" date-min="heureArrivee">
 		<input type = "submit">
 	</form>
+
 
 	</body>
 </html>

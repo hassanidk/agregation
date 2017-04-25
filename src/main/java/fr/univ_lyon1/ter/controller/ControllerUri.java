@@ -34,18 +34,20 @@ public class ControllerUri {
 	
 	@Autowired
 	ServletContext context;
+	Aggregation agg;
 	// ------- Redirige vers l'index de l'application
 	@RequestMapping(value = { "/", "/index" })
 	public String index() {
 		return "index";
 	}
 	@RequestMapping(value = {"/result"}, method = RequestMethod.POST ,produces = "application/json")
-	public @ResponseBody String getResult(@RequestParam String preferences, 
+	public  String postResult(@RequestParam String preferences, 
 			@RequestParam String dateJour, 
 			@RequestParam String heureArrivee, 
 			@RequestParam String heureDepart){
 		
-
+		ModelAndView mod = new ModelAndView();
+		mod.setViewName("index");
 		ArrayList<String> pref = new ArrayList<String>();
 		String [] elementJour = dateJour.split("-");
 		String [] elementArrivee = heureArrivee.split(":");
@@ -57,7 +59,7 @@ public class ControllerUri {
 			for (int i = 0; i<prefs.length;++i)
 				pref.add(prefs[i]);
 		}
-		Aggregation agg = new Aggregation(arrivee, depart, pref);
+		agg = new Aggregation(arrivee, depart, pref);
 		
 		if (Utils._DEBUG_MODE){
 			Debug.addDebug("--CONTROLLER URI--", "Début");
@@ -70,10 +72,13 @@ public class ControllerUri {
 			Debug.addDebug("--CONTROLLER URI--", "Fin");
 			
 		}
+		return "result";
+		//return agg.affichageResultatWeb();	
+	}
+	
+	@RequestMapping(value = {"/result"}, method = RequestMethod.GET, produces = "application/json")
+	public @ResponseBody String getResult(){
 		return agg.affichageResultatWeb();
-		
-
-		
 	}
 
 

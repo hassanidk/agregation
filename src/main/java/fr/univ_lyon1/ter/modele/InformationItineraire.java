@@ -141,60 +141,58 @@ public class InformationItineraire {
 //				+ ", coutItineraire=" + coutItineraire + "]";
 	}
 	
-	public String getJSONItineraire(){
+	public String setJSON(){
 		try{
+			String metro = "";
+			String metroTemp ="";
+			String directionTemp = "";
+			String direction = "";
+			String depart = "";
+			String arrivee = "";
+			int heureDepart = 0;
+			int heureArrivee = 0;
+			
 			JSONObject jobjroot = new JSONObject();
 			jobjroot.put("nomSite", nomSite);
 			jobjroot.put("dureeVisite", dureeVisite);
-			if (cheminItineraire.size()==1){
-				JSONArray jarr = Utils.setJSONArray("pied", heureItineraire, cheminItineraire.get(0), cheminItineraire.get(0));
-				jobjroot.put("itineraire0", jarr);
-			}else{
-				boolean first = true;
-				boolean second = false;
-				boolean test = true;
-				
-				String metro = "";
-				String depart = "";
-				String arrive = "";
-				int heure = 0;
-				
-				int i = 0;
-				int j = 0;
-				while (i< cheminItineraire.size()){
-					if (cheminItineraire.get(i).contains("Metro")){
-						if(second){
-							arrive = cheminItineraire.get(i-1);
-							JSONArray jarr = Utils.setJSONArray(metro, heure, depart, arrive);
-							jobjroot.put("itineraire"+j, jarr);
-							j++;
-							second = false;
-						}
-						if(first){
-							depart = cheminItineraire.get(i+2);
-							first = false;
-							second = true;
-						}else{
-							depart = cheminItineraire.get(i-1);
-							second = true;
-						}
-						metro = Utils.getMetroJSON(cheminItineraire.get(i));
-						heure = Integer.parseInt(cheminItineraire.get(i+1)) - 10;
-						
-					}
-					i++;
-				}
-				JSONArray jarr = Utils.setJSONArray(metro, heure, depart, cheminItineraire.get(cheminItineraire.size()-1));
-				jobjroot.put("itineraire"+j, jarr);
-			}
-			return jobjroot.toString();
 			
-		}catch(JSONException e){
+			boolean first = true;
+			int i = 0;
+			int j = 0;
+			while (i < cheminItineraire.size()){
+				System.out.println(cheminItineraire.get(i));
+				if (cheminItineraire.get(i).contains("Direction")){
+					metro = Utils.getMetroJSON(cheminItineraire.get(i));
+					direction = Utils.getDirection(cheminItineraire.get(i));
+					if (first){
+						heureDepart = Integer.parseInt(cheminItineraire.get(i+1));
+						depart = cheminItineraire.get(i+2);
+						first = false;
+					}else{
+						arrivee = cheminItineraire.get(i-1);
+						heureArrivee = Integer.parseInt(cheminItineraire.get(i+1));
+						JSONArray jarr = Utils.setJSONArray(metroTemp, directionTemp, depart, heureDepart, arrivee, heureArrivee);
+						jobjroot.put("itineraire"+j, jarr);
+						depart = cheminItineraire.get(i-1);
+						heureDepart = Integer.parseInt(cheminItineraire.get(i+1));
+						j++;
+					}
+					metroTemp = metro;
+					directionTemp = direction;
+				}
+				
+				i++;
+			}
+	
+			JSONArray jarr = Utils.setJSONArray(metro, direction, depart, heureDepart, cheminItineraire.get(cheminItineraire.size()-1), 0);
+			jobjroot.put("itineraire"+j, jarr);
+			return jobjroot.toString();
+		} catch (JSONException e){
 			return "";
 		}
-		
-
 	}
+	
+	
 
 	
 	

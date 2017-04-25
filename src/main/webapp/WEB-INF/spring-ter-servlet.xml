@@ -19,7 +19,7 @@
    <mvc:default-servlet-handler/>
 	<context:component-scan base-package="fr.univ_lyon1.ter.controller" /> 
  	<mvc:resources mapping="/resources/**" location="/resources/" />
-
+	
 	<bean id="viewResolver"
 		class="org.springframework.web.servlet.view.UrlBasedViewResolver">
 		<property name="viewClass"

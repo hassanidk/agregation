@@ -1,6 +1,9 @@
 package fr.univ_lyon1.ter.utilitaire;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -30,7 +33,7 @@ public class Utils {
 	
 	public static final String file_horraire_tcl = System.getProperty("user.dir") + "/resources/HorraireTCL.nt";
 	public static final String file_sites_lyon = System.getProperty("user.dir") + "/resources/SitesLyon.nt";
-	public static boolean _DEBUG_MODE = true;
+	public static boolean _DEBUG_MODE = false;
 	
 	@SuppressWarnings("serial")
 	static final ArrayList<String> metro_a = new ArrayList<String>() {{
@@ -484,6 +487,12 @@ public class Utils {
 		return metroURL;
 	}
 	
+	public static String getDirection(String direction){
+		String[] parts = direction.split(" Direction ");
+		return parts[1];
+	}
+	
+	
 	public static String getMetroJSON(String direction){
 		return convertFromURLStyle(getMetro(direction));
 	}
@@ -499,22 +508,32 @@ public class Utils {
 		
 	}
 	
-	public static JSONArray setJSONArray(String _metro, int _heure, String _depart, String _arrivee){
+
+	
+	public static JSONArray setJSONArray(String _metro, String _direction, String _depart,int _heureDepart, String _arrivee,
+			int _heureArrivee){
 		JSONArray jarr = new JSONArray();
 		JSONObject metro = new JSONObject();
-		JSONObject heure = new JSONObject();
+		JSONObject direction = new JSONObject();
 		JSONObject depart = new JSONObject();
+		JSONObject heureDepart = new JSONObject();
 		JSONObject arrivee = new JSONObject();
+		JSONObject heureArrivee = new JSONObject();
 		
 		try {
 			metro.put("metro", _metro);
-			heure.put("heure", _heure);
+			direction.put("direction", _direction);
+			
 			depart.put("depart", _depart);
+			heureDepart.put("heureDepart", _heureDepart);
 			arrivee.put("arrivee", _arrivee);
+			heureArrivee.put("heureArrivee", _heureArrivee);
 			jarr.put(metro);
-			jarr.put(heure);
+			jarr.put(direction);
 			jarr.put(depart);
+			jarr.put(heureDepart);
 			jarr.put(arrivee);
+			jarr.put(heureArrivee);
 		} catch (JSONException e) {
 			System.out.println(e.getMessage());
 		}
@@ -522,6 +541,8 @@ public class Utils {
 		return jarr;
 		
 	}
+	
+
 	
 	
 	

@@ -6,6 +6,7 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 import fr.univ_lyon1.ter.modele.Aggregation;
+import fr.univ_lyon1.ter.utilitaire.Utils;
 
 public class App {
 	
@@ -15,12 +16,13 @@ public class App {
 			
 		
 		ArrayList<String> preferences =new ArrayList<String>();
-		preferences.add("Musée");
 		
 		
-		Aggregation agg = new Aggregation(arrivee,depart,preferences);
 		
-		agg.affichageResultat();
+		//Aggregation agg = new Aggregation(arrivee,depart,preferences);
+		
+		//agg.affichageResultat();
+		//System.out.println(agg.affichageResultatWeb());
 		//System.out.println(LecteurRDF.getHeure(1300, "perrache", "metro_a", true));
 //		try {
 //			FreGraPaD.getEtoile();

@@ -45,19 +45,19 @@ edge {
 }
 
 edge[metro ="Metro A"] {
-  line-color: blue;
+  line-color: #ce0018;
 }
 
 edge[metro = "Metro B"] {
-  line-color: #00FF33;
+  line-color: #729fcf;
 }
 
 edge[metro = "Metro C"] {
-  line-color: white;
+  line-color: #efad29;
 }
 
 edge[metro = "Metro D"] {
-  line-color: red;
+  line-color: #39a552;
 }
 
 edge[?is_walking] {

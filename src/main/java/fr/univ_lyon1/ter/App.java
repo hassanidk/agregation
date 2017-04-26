@@ -19,9 +19,9 @@ public class App {
 		
 		
 		
-		//Aggregation agg = new Aggregation(arrivee,depart,preferences);
+		Aggregation agg = new Aggregation(arrivee,depart,preferences);
 		
-		//agg.affichageResultat();
+		agg.affichageResultat();
 		//System.out.println(agg.affichageResultatWeb());
 		//System.out.println(LecteurRDF.getHeure(1300, "perrache", "metro_a", true));
 //		try {

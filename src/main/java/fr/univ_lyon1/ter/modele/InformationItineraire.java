@@ -154,17 +154,21 @@ public class InformationItineraire {
 			
 			JSONObject jobjroot = new JSONObject();
 			jobjroot.put("nomSite", nomSite);
-			jobjroot.put("dureeVisite", dureeVisite);
+			int duree = dureeVisite-20;
+			duree = Utils.checkHour(duree);
+			jobjroot.put("dureeVisite", duree);
 			
 			boolean first = true;
 			int i = 0;
 			int j = 0;
+			
 			while (i < cheminItineraire.size()){
 				System.out.println(cheminItineraire.get(i));
 				if (cheminItineraire.get(i).contains("Direction")){
 					metro = Utils.getMetroJSON(cheminItineraire.get(i));
 					direction = Utils.getDirection(cheminItineraire.get(i));
 					if (first){
+						System.out.println(heureItineraire);
 						heureDepart = Integer.parseInt(cheminItineraire.get(i+1));
 						depart = cheminItineraire.get(i+2);
 						first = false;
@@ -180,12 +184,16 @@ public class InformationItineraire {
 					metroTemp = metro;
 					directionTemp = direction;
 				}
-				
+				 
 				i++;
 			}
-	
+			
+			heureArrivee =  coutItineraire-dureeVisite ;
+			heureArrivee = Utils.checkHour(heureArrivee);
 			JSONArray jarr = Utils.setJSONArray(metro, direction, depart, heureDepart, cheminItineraire.get(cheminItineraire.size()-1), 0);
+			
 			jobjroot.put("itineraire"+j, jarr);
+			
 			return jobjroot.toString();
 		} catch (JSONException e){
 			return "";

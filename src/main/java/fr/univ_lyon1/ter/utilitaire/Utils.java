@@ -529,11 +529,13 @@ public class Utils {
 			arrivee.put("arrivee", _arrivee);
 			heureArrivee.put("heureArrivee", _heureArrivee);
 			jarr.put(metro);
-			jarr.put(direction);
-			jarr.put(depart);
 			jarr.put(heureDepart);
-			jarr.put(arrivee);
+			jarr.put(depart);
+			jarr.put(direction);
+			
 			jarr.put(heureArrivee);
+			jarr.put(arrivee);
+			
 		} catch (JSONException e) {
 			System.out.println(e.getMessage());
 		}

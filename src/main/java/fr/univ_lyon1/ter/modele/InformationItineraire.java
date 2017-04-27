@@ -16,7 +16,7 @@ public class InformationItineraire {
 	private String arretFrom;
 	private String arretSite;
 	private List<String> cheminItineraire;
-	private int coutItineraire;
+	private int hourExitSite;
 	private int dureeVisite;
 	
 	/**
@@ -24,16 +24,16 @@ public class InformationItineraire {
 	 * @param heureItineraire, heure de depart à laquelle on souhaite se rendre vers le site I
 	 * @param nomSite , arret dusite touristique
 	 * @param cheminItineraire chemin de l'itineraire entre un point X de depart et le site touristique
-	 * @param coutItineraire cout (heure/minute) de l'itineraire + dureedevisite de site (Correspond a l'heure ou on quitte le site)
+	 * @param hourExitSite cout (heure/minute) de l'itineraire + dureedevisite de site (Correspond a l'heure ou on quitte le site)
 	 */
-	public InformationItineraire(int heureItineraire,String nomSite,String arretFrom, String arretSite, List<List<String>> cheminItineraire, int coutItineraire, int dureeVisite) {
+	public InformationItineraire(int heureItineraire,String nomSite,String arretFrom, String arretSite, List<List<String>> cheminItineraire, int hourExitSite, int dureeVisite) {
 		
 		this.heureItineraire = heureItineraire;
 		this.nomSite = nomSite;
 		this.arretFrom = arretFrom;
 		this.arretSite =arretSite;
 		this.cheminItineraire = cheminItineraire.get(0);
-		this.coutItineraire = coutItineraire;
+		this.hourExitSite = hourExitSite;
 		this.dureeVisite = dureeVisite;
 	}
 
@@ -85,122 +85,114 @@ public class InformationItineraire {
 		this.cheminItineraire = cheminItineraire;
 	}
 
-	public int getCoutItineraire() {
-		return coutItineraire;
+	public int getHourExitSite() {
+		return hourExitSite;
 	}
 
-	public void setCoutItineraire(int coutItineraire) {
-		this.coutItineraire = coutItineraire;
+	public void setHourExitSite(int hourExitSite) {
+		this.hourExitSite = hourExitSite;
 	}
 
 	@Override
 	public String toString() {
-		String txt="Pour vous rendre au site: "+nomSite+"\n";
-		boolean verifArret = false;
-		boolean firstElem = true;
-		String elemPrec ="";
-		if (Utils._DEBUG_MODE){
-			Debug.addDebug("\nnomSite", nomSite);
-		}
-		for (String elem : cheminItineraire){
-			if (Utils._DEBUG_MODE)
-				Debug.addDebug("elem", elem);
-			if (verifArret){
-				if (firstElem){
-					txt = txt+" à l'arret "+elem;
-					firstElem = false;
-				}else{
-					
-				}
-				verifArret = false;
+		String txt="Pour vous rendre au site : "+nomSite;
+		int i = 0;
+		for (String arret : cheminItineraire){
+			if (arret.contains("|")){
+				String[] parts = arret.split("[|]");
+				if (i>0)
+					txt = txt+"\nDescendez à l'arret "+parts[0];
+				txt = txt+"\n Prenez le"+parts[1]+" à l'arret "+parts[0]+parts[2]+"à"+parts[4];
+				
 			}
-			if (elem.contains("Direction")){
-				if (firstElem){
-					txt = txt+ "Prenez le "+elem;
-				}else{
-					txt = txt+"\nDescendez à l'arrêt "+elemPrec+" et prenez le "+elem;
-				}
-				if (firstElem ==false)
-					txt = txt+" à l'arret "+elemPrec;
+			if (arret.contains("Arrivée :")){
+				txt = txt+"\n Descendez à l'arret "+arret+"."+nomSite+" se trouve à quelques minutes...";
 			}
-			if (elem.matches(".*\\d+.*")){
-				int heures = Integer.valueOf(elem);
-				txt = txt+ " à "+Utils.getHour(heures)+"h"+ Utils.getMin(heures);
-				verifArret = true;
-			}
-			elemPrec = elem;
+			i++;
 		}
-		if (dureeVisite !=0){
-			txt = txt+"\nDescendez à l'arret "+arretSite+". Le site est à quelques minutes de l'arrêt de métro.\nNous vous conseillons d'y rester "+ dureeVisite+" minutes, afin de profiter au maximum de la Ville de Lyon";
-		}else{
-			txt = txt+"\nDescendez à la Gare-Part Dieu. Nous vous souhaitons un agréable voyage, et esperons que vous revoir au plus vite";
-		}
-		return txt+"\n";
-//		return "InformationItineraire [heureItineraire=" + heureItineraire + ", nomSite=" + nomSite + ", arretFrom="
-//				+ arretFrom + ", arretSite=" + arretSite + ", cheminItineraire=" + cheminItineraire
-//				+ ", coutItineraire=" + coutItineraire + "]";
+		//return txt;
+		return "InformationItineraire [heureItineraire=" + heureItineraire + ", nomSite=" + nomSite + ", arretFrom="
+				+ arretFrom + ", arretSite=" + arretSite + ", cheminItineraire=" + cheminItineraire
+				+ ", hourExitSite=" + hourExitSite + "]";
 	}
 	
+
 	public String setJSON(){
-		try{
-			String metro = "";
-			String metroTemp ="";
-			String directionTemp = "";
-			String direction = "";
-			String depart = "";
-			String arrivee = "";
-			int heureDepart = 0;
-			int heureArrivee = 0;
-			
+		
+		try {
+			// Initialisation variables
 			JSONObject jobjroot = new JSONObject();
-			jobjroot.put("nomSite", nomSite);
 			int duree = dureeVisite-20;
+			int size = cheminItineraire.size();
+			int j = 0;
+			boolean first = true;
 			duree = Utils.checkHour(duree);
+			
+			String metro = "";
+			String depart = "";
+			String direction ="";
+			String tempMetro ="";
+			String tempDepart ="";
+			String tempDirection= "";
+			String arrivee ="";
+			String destination = "";
+
+			int heureDepart = 0;
+			int heureArrivee =0;
+			int tempHeureDepart = 0;
+			
+			jobjroot.put("nomSite", nomSite);
 			jobjroot.put("dureeVisite", duree);
 			
-			boolean first = true;
-			int i = 0;
-			int j = 0;
-			
-			while (i < cheminItineraire.size()){
-				System.out.println(cheminItineraire.get(i));
-				if (cheminItineraire.get(i).contains("Direction")){
-					metro = Utils.getMetroJSON(cheminItineraire.get(i));
-					direction = Utils.getDirection(cheminItineraire.get(i));
-					if (first){
-						System.out.println(heureItineraire);
-						heureDepart = Integer.parseInt(cheminItineraire.get(i+1));
-						depart = cheminItineraire.get(i+2);
-						first = false;
-					}else{
-						arrivee = cheminItineraire.get(i-1);
-						heureArrivee = Integer.parseInt(cheminItineraire.get(i+1));
-						JSONArray jarr = Utils.setJSONArray(metroTemp, directionTemp, depart, heureDepart, arrivee, heureArrivee);
-						jobjroot.put("itineraire"+j, jarr);
-						depart = cheminItineraire.get(i-1);
-						heureDepart = Integer.parseInt(cheminItineraire.get(i+1));
-						j++;
+			if (cheminItineraire.size() == 3){
+				String arrets= cheminItineraire.get(0);
+				String [] parts = arrets.split("[|]");
+				destination = cheminItineraire.get(1);
+				String[] part = destination.split("Arrivée :");
+				JSONArray jarr = Utils.setJSONArray(parts[1], Utils.getDirection(parts[2]), parts[0], 
+						Integer.parseInt(parts[4].trim()), part[1], Integer.parseInt(cheminItineraire.get(2)));
+				jobjroot.put("itineraire"+j, jarr);
+			}else{
+				for (String arret : cheminItineraire){
+					if (arret.contains("|")){
+						String[] parts = arret.split("[|]");
+						depart = parts[0];
+						metro = parts[1];
+						direction = Utils.getDirection(parts[2]);
+						heureDepart = Integer.parseInt(parts[4].trim());
+						if (first){
+							first = false;
+						}else{
+							heureArrivee = Integer.parseInt(parts[3].trim());
+							arrivee = parts[0];
+							JSONArray jarr = Utils.setJSONArray(tempMetro, tempDirection, tempDepart, tempHeureDepart, arrivee, heureArrivee);
+							jobjroot.put("itineraire"+j, jarr);
+							j++;
+						}
+						tempMetro = metro;
+						tempDepart = depart;
+						tempDirection = direction;
+						tempHeureDepart = heureDepart;
 					}
-					metroTemp = metro;
-					directionTemp = direction;
 				}
-				 
-				i++;
+				destination = cheminItineraire.get(size-2);
+				String[] part = destination.split("Arrivée :");
+				
+				
+				JSONArray jarr = Utils.setJSONArray(tempMetro, tempDirection, tempDepart, tempHeureDepart, 
+						part[1], Integer.parseInt(cheminItineraire.get(size-1)));
+				jobjroot.put("itineraire"+j, jarr);
 			}
-			
-			heureArrivee =  coutItineraire-dureeVisite ;
-			heureArrivee = Utils.checkHour(heureArrivee);
-			JSONArray jarr = Utils.setJSONArray(metro, direction, depart, heureDepart, cheminItineraire.get(cheminItineraire.size()-1), 0);
-			
-			jobjroot.put("itineraire"+j, jarr);
-			
 			return jobjroot.toString();
-		} catch (JSONException e){
-			return "";
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return "error parsing";
 		}
+		
+		
+		
 	}
-	
-	
 
 	
 	

@@ -34,6 +34,7 @@ public class Aggregation {
 	private ArrayList<InformationItineraire> itineraire;
 	private ArrayList<Site> listeSite;
 	private String partDieu = "Part Dieu";
+	private int tolerance_depart = 30;
 	GenerateurRDF generateur;
 	
 	public Aggregation(Calendar arrivee, Calendar depart, ArrayList<String> preferences){
@@ -131,7 +132,7 @@ public class Aggregation {
 		String arretArrivee ="";
 		int heureActuelle = arrivee;
 		int heureTemp = 0;
-		int dureeVisiteSite = 0;
+		int hourExitSite = 0;
 		int heureDepart = depart;
 		Iterator<Site> it = listeSite.iterator();
 		boolean premiereIteration = true;
@@ -168,19 +169,19 @@ public class Aggregation {
 				
 				// Check le temps_itineraire 
 				if(premiereIteration){
-					premiereIteration = false;
 					heureTemp = heureActuelle + 2*t_vers_site + site.getDureeVisiteMoyenne();
+					premiereIteration = false;
 				}else{
 					heureTemp = heureActuelle + t_vers_site + t_vers_part_dieu + site.getDureeVisiteMoyenne();
 				}
-				dureeVisiteSite = heureActuelle + t_vers_site + site.getDureeVisiteMoyenne();
+				hourExitSite = heureActuelle + t_vers_site + site.getDureeVisiteMoyenne();
 				
 				heureTemp = Utils.checkHour(heureTemp);
-				dureeVisiteSite = Utils.checkHour(dureeVisiteSite);
-				if (heureTemp < heureDepart){ // Rajouter une tolérance au départ
-					itineraire.add(new InformationItineraire(heureActuelle,site.getNom(),arretDepart, arretArrivee, versSiteTouristique.getOptimalPaths(), dureeVisiteSite, site.getDureeVisiteMoyenne()));
-					heureActuelle = heureActuelle + t_vers_site + site.getDureeVisiteMoyenne();
-					heureActuelle = Utils.checkHour(heureActuelle);
+				hourExitSite = Utils.checkHour(hourExitSite);
+				if (heureTemp < heureDepart-tolerance_depart){ // Rajouter une tolérance au départ
+					itineraire.add(new InformationItineraire(heureActuelle,site.getNom(),arretDepart, arretArrivee, versSiteTouristique.getOptimalPaths(), hourExitSite, site.getDureeVisiteMoyenne()));
+					heureActuelle = hourExitSite ;
+					
 					arretDepart = arretArrivee;
 				}else{
 					it.remove();
@@ -201,8 +202,8 @@ public class Aggregation {
 		              .build();
 			SearchResult versPartDieu = Hipster.createDijkstra(p).search(partDieu);
 			int t_vers_part_dieu = (int)Double.parseDouble(new ResultatRecherche(versPartDieu.getGoalNode()).toString());
-			t_vers_part_dieu = Utils.checkHour(t_vers_part_dieu + heureActuelle);
-			itineraire.add(new InformationItineraire(heureActuelle,"Gare Part-Dieu",arretDernierSite, partDieu, versPartDieu.getOptimalPaths(), t_vers_part_dieu, 0));
+			t_vers_part_dieu = Utils.checkHour(heureActuelle + t_vers_part_dieu );
+			itineraire.add(new InformationItineraire(heureActuelle,"Gare Part-Dieu",arretDernierSite, partDieu, versPartDieu.getOptimalPaths(), t_vers_part_dieu, 20));
 		}
 		
 		
@@ -213,8 +214,42 @@ public class Aggregation {
 		generateur.mise_a_jour_horraire();
 		getSites();
 		getItineraire();
-		for (InformationItineraire i: itineraire)
-			i.setCheminItineraire(Utils.getItineraireMetro(i.getHeureItineraire(),i.getCheminItineraire()));
+		int size = 0;
+		int heureExit = 0;
+		int heureDepart = 0;
+		boolean first = true;
+		for (InformationItineraire i: itineraire){
+			if (first){
+				i.setCheminItineraire(Utils.getAllItineraire(i.getHeureItineraire(),i.getCheminItineraire()));
+				size = i.getCheminItineraire().size()-1;
+				heureExit = Integer.parseInt(i.getCheminItineraire().get(size)) + i.getDureeVisite();
+				heureExit = Utils.checkHour(heureExit);
+				i.setHourExitSite(heureExit);
+				first = false;
+			}else{
+				i.setHeureItineraire(heureExit);
+				i.setCheminItineraire(Utils.getAllItineraire(i.getHeureItineraire(),i.getCheminItineraire()));
+				size = i.getCheminItineraire().size()-1;
+				heureExit = Integer.parseInt(i.getCheminItineraire().get(size)) + i.getDureeVisite();
+				heureExit = Utils.checkHour(heureExit);
+				i.setHourExitSite(heureExit);
+			}
+		
+				
+//			
+//			size = i.getCheminItineraire().size()-1;
+//			heureExit = Integer.parseInt(i.getCheminItineraire().get(size)) + i.getDureeVisite();
+//			heureExit = Utils.checkHour(heureExit);
+//			
+//			heureDepart = heureExit;
+//			
+//			i.setHourExitSite(heureExit);
+//			
+//			i.setCheminItineraire(Utils.getAllItineraire(i.getHeureItineraire(),i.getCheminItineraire()));
+			
+		}
+		
+		
 		
 			
 		

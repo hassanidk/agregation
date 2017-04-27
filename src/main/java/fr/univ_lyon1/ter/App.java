@@ -11,26 +11,19 @@ import fr.univ_lyon1.ter.utilitaire.Utils;
 public class App {
 	
 	public static void main(String... argv)  {
-		Calendar arrivee = new GregorianCalendar(2017,3,20,13,0,00);
-		Calendar depart = new GregorianCalendar(2017,3,20,15,30,00);
+		Calendar arrivee = new GregorianCalendar(2013,12,28,13,0,00);
+		Calendar depart = new GregorianCalendar(2013,12,28,19,30,00);
 			
 		
 		ArrayList<String> preferences =new ArrayList<String>();
-		
+		preferences.add("Musée");
 		
 		
 		Aggregation agg = new Aggregation(arrivee,depart,preferences);
 		
-		agg.affichageResultat();
-		//System.out.println(agg.affichageResultatWeb());
-		//System.out.println(LecteurRDF.getHeure(1300, "perrache", "metro_a", true));
-//		try {
-//			FreGraPaD.getEtoile();
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-		
+		//agg.affichageResultat();
+		System.out.println(agg.affichageResultatWeb());
+
 		System.out.println("fini");
 	}
 }

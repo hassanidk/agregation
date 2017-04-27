@@ -38,7 +38,7 @@ public class Utils {
 	@SuppressWarnings("serial")
 	static final ArrayList<String> metro_a = new ArrayList<String>() {{
 		add("perrache");
-		add("ampere");
+		add("ampère_victor_hugo");
 		add("bellecour");
 		add("cordeliers");
 		add("hotel_de_ville");
@@ -316,13 +316,14 @@ public class Utils {
 	public static String chkMetro(String arretPrec, String arretActuel){
 		arretPrec = convertToURLStyle(arretPrec);
 		arretActuel = convertToURLStyle(arretActuel);
+		
 		switch(arretPrec){
 			case "saxe_gambetta": 	if(arretActuel.equals("place_guichard") || arretActuel.equals("jean_mace")){
 										return "Metro B";
 									}else{
 										return "Metro D";
 									}
-			case "bellecour":		if(arretActuel.equals("ampere_victor_hugo") || arretActuel.equals("cordeliers")){
+			case "bellecour":		if(arretActuel.equals("ampère_victor_hugo") || arretActuel.equals("cordeliers")){
 										return "Metro A";
 									}else{
 										return "Metro D";
@@ -346,8 +347,8 @@ public class Utils {
 		    	return convertFromURLStyle(nomMetro);
 		}
 
-
-				
+		
+		
 		return "error";
 	}
 	/**
@@ -414,6 +415,62 @@ public class Utils {
 			default: return "Error convertion";
 		}
 	}
+	
+	public static List<String> getAllItineraire(int _heureArrivee, List<String> arretsMetro){
+		String arretPrec = arretsMetro.get(0);
+		String metro = "";
+		String direction;
+		String metroPrec = "";
+		int heureArrivee = _heureArrivee;
+		int heureDepartTCL = 0;
+		
+		boolean sens = true;
+		boolean firstElem = true;
+		List<String> itineraire = new ArrayList<String>();
+		// Cas ou on a un seul arret à parcourir
+		if (arretsMetro.size() ==1){
+			itineraire.add(arretPrec);
+			return itineraire;
+		}
+		for (String arret : arretsMetro){
+			if(firstElem){
+				metro = chkMetro(arret, arretsMetro.get(1));
+				metroPrec = metro;
+				direction = " Direction "+getDirectionMetro(metro, arret, arretsMetro.get(1));
+				sens = getSens(metro + direction);
+				heureDepartTCL = LecteurRDF.getHeure(heureArrivee, convertToURLStyle(arret), convertToURLStyle(metro), sens);
+				itineraire.add(arret +"|"+metro+"|"+direction +"|"+heureArrivee+ "|"+heureDepartTCL);
+				heureArrivee = heureDepartTCL;
+				firstElem = false;
+			}else{
+				// On verifie si on est toujours sur la même ligne
+				metro = chkMetro(arretPrec, arret);
+				// Cas où l'on change de ligne
+				if (!metro.equals(metroPrec)){
+					metroPrec = metro;
+					direction = " Direction "+getDirectionMetro(metro, arretPrec, arret);;
+					sens = getSens(metro + direction);
+					heureArrivee--;
+					heureArrivee = checkHour(heureArrivee);
+					heureDepartTCL = LecteurRDF.getHeure(heureArrivee, convertToURLStyle(arret), convertToURLStyle(metro), sens);
+					
+					itineraire.add(arretPrec +"|"+metro+"|"+direction +"|"+heureArrivee+ "|"+heureDepartTCL);
+					heureArrivee = heureDepartTCL;
+					
+					
+				}
+			}
+			// Dans tous les cas, il faut mettre à jour l'heure d'arrivée à chacun des arrêts
+			
+			heureArrivee++;
+			heureArrivee = checkHour(heureArrivee);
+			arretPrec = arret;
+		}
+		
+		itineraire.add(" Arrivée :"+arretsMetro.get(+arretsMetro.size()-1));
+		itineraire.add(String.valueOf(heureArrivee));
+		return itineraire;
+	}
 	/**
 	 * 
 	 * Renvoie une arrayList contenant l'itineraireMEtro avec les directions
@@ -427,6 +484,10 @@ public class Utils {
 		int horraire = heure;
 		boolean sens = true;
 		boolean firstElem = true;
+		// TEST
+		for (String arret : arretsMetro){
+			System.out.println("arret : "+arret);
+		}
 		// MAJ
 		if (arretsMetro.size() == 1){
 			arretMetro.add( arretPrec);
@@ -434,6 +495,7 @@ public class Utils {
 		}
 		//FIN MAJ
 		for (String arret : arretsMetro){
+			;
 			if (firstElem){
 				metro = chkMetro(arret, arretsMetro.get(1));
 				metroTemp = metro;

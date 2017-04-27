@@ -42,7 +42,7 @@ public class LecteurRDF {
 			if (next.getSubject().toString().contains(metro)){
 				if (next.getPredicate().toString().contains(arret)){
 					heure = Utils.getIntHour(next.getObject().toString());
-					if (heure >= horraire){
+					if (heure > horraire){
 						break;
 						
 					

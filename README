@@ -62,3 +62,29 @@ Semaine du 28 mars
 	Bugs : Thread qui est interropu brusquement, risque de fuite
 			mémoire
 
+Mois d'avril
+	Transformation du projet.
+	Conversion du projet JAva en SPRING WEB MVC
+	Les raisons ? Une vidéo à produire au lieu d'une presentation
+	devant un jury ... (Sorties terminales non représentatif de la
+	quantité de travail effectué)
+	- Nettoyage du code en conséquence : On a pour objectif d'utiliser
+	de veritable données issues de l'OpenData de Lyon
+		-> Préparation du "terrain"
+	- AJout librairie CYtoscape js pour la visualisation des graphs
+	- Création de structures en JSON pour s'adapter à cette librairie
+	(TOpologie du réseau, résultat de calculs ...)
+	-Cohabitation des deux projets existants dans le même projet
+	- Permet d'effectuer des tests "plus sur"
+	- Ajout d'un mode DEBUG
+
+	Bugs du mois précédent résolus
+	APparition de nouveaux bugs, suite aux nouvelles contraintes
+	Bugs : Pour chaque itineraire, l'heure d'arrivée sur site ou
+	arrêt n'est pas forcement le bon. Cela s'explique par un
+	mauvais choix technique de structure employé dès le début
+
+Mois de mai
+	Poster, rapport , vidéo, fin de la periode de développement
+
+

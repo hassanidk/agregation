@@ -127,79 +127,93 @@ function initCy(then) {
 
 }
 
-function createDivNomSite(val) {
-	$('#result').append("<div class=\"site\"></div>");
-	$('.site:last').append("<div class=\"row\"></div>");
-	$('.row:last').append("<div class=\"col-lg-6\"></div>")
-	$('.col-lg-6:last').text(val);
+function createDivNomSite(val){
+  $('#result').append("<div class=\"site\"></div>");
+  $('.site:last').append("<div class=\"row\"></div>");
+  $('.row:last:last').text(val);
 }
 
-function addDivMetro(val) {
-	$('.site:last').append("<div class=\"row\"></div>");
-	$('.row:last').append("<div class=\"col-lg-2\"></div>");
-	$('.col-lg-2:last').text(val);
+function addDureeVisite(val){
+  var heure = getHour(val);
+  if (heure != 0){
+    $('.site:last').append("<div class=\"row\"></div>");
+    $('.row:last').text('Durée de visite conseillée : '+ heure);
+  }
 }
 
-function addDivHeureDepart(val) {
-	$('.row:last').append("<div class=\"col-lg-2\"></div>");
-	$('.col-lg-2:last').text(val);
+function addDivMetro(val){
+  $('.site:last').append("<div class=\"panel panel-default\"></div>")
+  $('.panel.panel-default:last').append("<div class=\"row\"></div>");
+  $('.row:last').append("<div class=\"col-lg-4\"></div>");
+  $('.col-lg-4:last').text(val);
 }
 
-function addDivDepart(val) {
-	$('.row:last').append("<div class=\"col-lg-2\"></div>");
-	departTemp = val;
+function addDivHeureDepart(val){
+  $('.row:last').append("<div class=\"col-lg-4\"></div>");
+  var heure = transformToHour(val);
+  $('.col-lg-4:last').html("<strong>"+heure+"</strong>");
 }
 
-function addDivDirection(val) {
-	$('.col-lg-2:last').append(departTemp);
-	$('.col-lg-2:last').append("<br />Direction " + val);
+function addDivDepart(val){
+  $('.row:last').append("<div class=\"col-lg-4\"></div>");
+  $('.col-lg-4:last').html(val);
 }
 
-function addDivHeureArrivee(val) {
-	$('.site:last').append("<div class=\"row\"></div>");
-	$('.row:last').append("<div class=\"col-lg-offset-2 col-lg-2\"></div>");
-	$('.col-lg-offset-2.col-lg-2:last').text(val);
-
+function addDivDirection(val){
+  $('.panel.panel-default:last').append("<div class=\"row\"></div>");
+  $('.row:last').append("<div class=\"col-lg-offset-8 col-lg-4\"></div>");
+  $('.col-lg-offset-8.col-lg-4:last').append("Direction "+val);
 }
 
-function addDivArrivee(val) {
-	$('.row:last').append("<div class=\"col-lg-2\"></div>");
-	$('.col-lg-2:last').text("Descendre à "+val);
-}
-
-function addDureeVisite(val) {
-	var heure = getHour(val);
-	if (heure != 0) {
-		$('.site:last').append("<div class=\"row\"></div>");
-		$('.row:last').append("<div class=\"col-lg-6\"></div>")
-		$('.col-lg-6:last').text('Durée de visite conseillée : ' + heure);
-		;
-	}
-}
-
-function addDivItineraire() {
-	$('.site:last').append(
-			"<div class=\"row\" ></div><div class= \"itineraire\"></div>");
+function addDivHeureArrivee(val){
+  $('.panel.panel-default:last').append("<div class=\"row\"></div>");
+  $('.row:last').append("<div class=\"col-lg-offset-4 col-lg-4\"></div>");
+  var heure = transformToHour(val);
+  $('.col-lg-offset-4.col-lg-4:last').text(heure);
 
 }
 
-function getHour(val) {
-	
-	var heure = ~~(val / 100);
-	var min = val % 100;
-	var txtMin = ' minutes';
-	if (val == 0)
-		return 0;
-	if (min < 10) {
-		if (min <= 1) {
-			txtMin = ' minute';
-		}
-		min = '0' + min;
+function addDivArrivee(val){
+  $('.row:last').append("<div class=\"col-lg-4\"></div>");
+  $('.col-lg-4:last').text(val);
+}
 
-	}
-	if (heure < 1) {
-		return min + txtMin;
-	}
 
-	return heure + ' heure et ' + min + txtMin;
+
+function addDivItineraire(){
+  $('.site:last').append("<div class=\"row\" ><div class= \"itineraire\"></div></div>");
+
+}
+
+function transformToHour(val){
+  if (val ==0){
+    return '00:00';
+  }
+  var heure = ~~(val/100);
+  var min = val%100;
+  if (min <10){
+    min = '0'+min;
+  }
+  return heure+':'+min;
+
+}
+
+function getHour(val){
+  var heure = ~~(val / 100);
+  var min = val % 100;
+  var txtMin = ' minutes';
+  if (val==0)
+    return 0;
+  if (min < 10){
+    if (min <=1){
+      txtMin = ' minute';
+    }
+    min = '0'+min;
+
+  }
+  if (heure <1){
+     return min+txtMin;
+  }
+  
+  return heure+' heure et '+min+txtMin;
 }

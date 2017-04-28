@@ -14,6 +14,13 @@ resources/						Dossier contenant les
 								
 fr/univ_lyon1/ter/utilitaire	Package contenant toutes 
 								les classes utilitaires
+Information
+--------------------------------------------------------------
+ATTENTION : Dans le projet WEB, les ressources statiques ne
+sont pas au même emplacement que les ressources issues
+du projet JAVA
+Solution temporaire : Mettre le fichier des horraires TCL +
+fichier des Site dans le HOME.User
 
 Commentaires
 --------------------------------------------------------------

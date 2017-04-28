@@ -49,7 +49,7 @@ public class ControllerUri {
 		ModelAndView mod = new ModelAndView();
 		mod.setViewName("index");
 		ArrayList<String> pref = new ArrayList<String>();
-		String [] elementJour = dateJour.split("-");
+		String [] elementJour = dateJour.split("/");
 		String [] elementArrivee = heureArrivee.split(":");
 		String [] elementDepart = heureDepart.split(":");
 		Calendar arrivee = Utils.constructCalendar(elementJour, elementArrivee);
@@ -70,6 +70,7 @@ public class ControllerUri {
 			Debug.addDebug("arrivee", arrivee);
 			Debug.addDebug("prefs", pref);
 			Debug.addDebug("--CONTROLLER URI--", "Fin");
+			Debug.printDebug();
 			
 		}
 		return "result";

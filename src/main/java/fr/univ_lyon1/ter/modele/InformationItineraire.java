@@ -122,7 +122,7 @@ public class InformationItineraire {
 		try {
 			// Initialisation variables
 			JSONObject jobjroot = new JSONObject();
-			int duree = dureeVisite-20;
+			int duree = dureeVisite;
 			int size = cheminItineraire.size();
 			int j = 0;
 			boolean first = true;
@@ -183,9 +183,10 @@ public class InformationItineraire {
 						part[1], Integer.parseInt(cheminItineraire.get(size-1)));
 				jobjroot.put("itineraire"+j, jarr);
 			}
+			
 			return jobjroot.toString();
 		} catch (JSONException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 			return "error parsing";
 		}

@@ -7,7 +7,7 @@ and open the template in the editor.
 <html>
     <head>
         <title> Accueil - Recherche site </title>
-            <meta charset="UTF-">
+            <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <link href="resources/css/index.css" rel="stylesheet"> 
             <!--<link href="index.css" rel="stylesheet"> -->
@@ -59,7 +59,7 @@ and open the template in the editor.
         
  
    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-    <script type="text/javascript" src="resources/js/resultat.js" ></script> -->
+    <script type="text/javascript" src="resources/js/resultat.js" charset="utf-8" ></script> 
     <!-- <script type="text/javascript" src="resultat.js" ></script>-->
     <script src="http://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.3/fastclick.min.js"></script>
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>

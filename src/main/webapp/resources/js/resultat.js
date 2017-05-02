@@ -208,8 +208,9 @@ function getHour(val){
     if (min <=1){
       txtMin = ' minute';
     }
+    
     min = '0'+min;
-
+    
   }
   if (heure <1){
      return min+txtMin;

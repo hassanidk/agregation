@@ -3,11 +3,11 @@ $(document).ready(function() {
 		format:"DD/MM/YY", 
 	});
 	$('#heureArrivee').datetimepicker({
-		format:'hh:mm', 
+		format:'HH:mm', 
 	});
 
 	$('#heureDepart').datetimepicker({
-		format:'hh:mm', 
+		format:'HH:mm', 
 	});
 
 	$("#heureArrivee").on("dp.change", function (e) {

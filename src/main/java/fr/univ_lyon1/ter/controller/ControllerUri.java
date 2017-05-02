@@ -46,8 +46,7 @@ public class ControllerUri {
 			@RequestParam String heureArrivee, 
 			@RequestParam String heureDepart){
 		
-		ModelAndView mod = new ModelAndView();
-		mod.setViewName("index");
+		
 		ArrayList<String> pref = new ArrayList<String>();
 		String [] elementJour = dateJour.split("/");
 		String [] elementArrivee = heureArrivee.split(":");
@@ -73,12 +72,14 @@ public class ControllerUri {
 			Debug.printDebug();
 			
 		}
+		System.out.println(agg.toString());
 		return "result";
 		//return agg.affichageResultatWeb();	
 	}
 	
 	@RequestMapping(value = {"/result"}, method = RequestMethod.GET, produces = "application/json")
 	public @ResponseBody String getResult(){
+		System.out.println(agg.toString());
 		return agg.affichageResultatWeb();
 	}
 

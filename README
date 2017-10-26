@@ -1,9 +1,5 @@
 PROJET TER 2016 - 2017
 ==============================================================
-
-HASSANI  Kassim  11302141
-OTHOMENE Thibaut 11302812
-
 Mots cléfs technologies utilisées: 
 	JAVA, RDF (N-Turtle), Maven
 
@@ -14,84 +10,10 @@ resources/						Dossier contenant les
 								
 fr/univ_lyon1/ter/utilitaire	Package contenant toutes 
 								les classes utilitaires
-Information
+MAJ FIN DE PROJET ET COMPLEMENTS D'INFORMATION
 --------------------------------------------------------------
-ATTENTION : Dans le projet WEB, les ressources statiques ne
-sont pas au même emplacement que les ressources issues
-du projet JAVA
-Solution temporaire : Mettre le fichier des horraires TCL +
-fichier des Site dans le HOME.User
-
-Commentaires
---------------------------------------------------------------
-
-Les classes "App", "FreGraPaD" sont positionnés de manières
-temporaires dans le package TER, dans le cadre de
-developpements et tests rapides des différentes fonctionalités
-
-	* Explications Classe "Utils"
-
-		Cette classe permet de partager des méthodes, variable
-		stockés une seule fois en mémoire (Permet un gain de
-		mémoire non négligeable). 
-
-		-Pour une ligne de métro, nous avons choisi de créer
-		 deux array lists. (DU point A à B, et B à A). Cela
-		 nous a faciliter la génération d'horaire aléatoire
-
-
-	* Explications classe "GenerateurRDF"
-		- Méthode mise_a_jour_horraire
-
-		Cette méthode permet de générer des horaires de 
-		passages à chaque arrêt. 
-
-		Prend en paramètre l'heure où arrive le "touriste" à
-		la Gare Part Dieu, et l'heure où le touriste quitte la 
-		gare.
-
-		Les paramètres nous permettent de restreindre, à chaque
-		reqûete, la topologie du réseau entre deux temps
-
-	// A COMPLETER
-Explications des taches effectués par date
-----------------------------------------------------------------
-Semaine du 28 mars
-	- Récupération des sites, et tri par pertinence des sites
-	- Affichage des circuits de site à visiter en fonction des
-	critères de recherches (Musée, parc ...)
-	- Affichage dans la console des sites à visiter, avec leurs
-	itinéraires metro (Avec les heures ou il faut prendre le métro
-	)
-	- /!\ PAS DE MAXIMISATION DES SITES A VISITER. ON privilégie
-	la qualité à la quantité ...
-
-	Bugs : Thread qui est interropu brusquement, risque de fuite
-			mémoire
-
-Mois d'avril
-	Transformation du projet.
-	Conversion du projet JAva en SPRING WEB MVC
-	Les raisons ? Une vidéo à produire au lieu d'une presentation
-	devant un jury ... (Sorties terminales non représentatif de la
-	quantité de travail effectué)
-	- Nettoyage du code en conséquence : On a pour objectif d'utiliser
-	de veritable données issues de l'OpenData de Lyon
-		-> Préparation du "terrain"
-	- AJout librairie CYtoscape js pour la visualisation des graphs
-	- Création de structures en JSON pour s'adapter à cette librairie
-	(TOpologie du réseau, résultat de calculs ...)
-	-Cohabitation des deux projets existants dans le même projet
-	- Permet d'effectuer des tests "plus sur"
-	- Ajout d'un mode DEBUG
-
-	Bugs du mois précédent résolus
-	APparition de nouveaux bugs, suite aux nouvelles contraintes
-	Bugs : Pour chaque itineraire, l'heure d'arrivée sur site ou
-	arrêt n'est pas forcement le bon. Cela s'explique par un
-	mauvais choix technique de structure employé dès le début
-
-Mois de mai
-	Poster, rapport , vidéo, fin de la periode de développement
-
-
+Projet sans réel enjeu, plus un projet à dominante découverte/recherche
+Projet réalisé avec comme contrainte :
+- Création de jeux de donnée à partir de 0
+- Format de donnée fixé
+- 
